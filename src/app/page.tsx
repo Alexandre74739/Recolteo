@@ -12,7 +12,7 @@ export default function Home() {
           spanTitle="proche"
           endTitle="de chez vous"
           description="Recolteo connecte commerçants et associations pour une solidarité simple et gratuite. Une action où tout le monde y gagne."
-          primaryButton="Explorer la plateforme →"
+          primaryButton="Explorer la plateforme"
           secondaryButton="Voir une démo en 90s"
         />
       </main>

@@ -1,3 +1,5 @@
+import Btn from "../ui/Button";
+
 interface HeroProps {
   title: string;
   subtitle: string;
@@ -40,8 +42,8 @@ export default function Hero({
         <p className="text-sapin max-w-xl mx-auto mb-10">{description}</p>
 
         <div className="flex items-center justify-center gap-4 flex-wrap">
-          <button>{primaryButton}</button>
-          <button>{secondaryButton}</button>
+          <Btn label={primaryButton} href="./" variant="sapin" />
+          <Btn label={secondaryButton} href="./" variant="peach" />
         </div>
       </div>
     </section>
