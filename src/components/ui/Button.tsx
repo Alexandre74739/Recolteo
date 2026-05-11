@@ -1,37 +1,48 @@
-export default function Btns() {
-    return (
-        <div>
-            <button>
-                Click moi
-            </button>
-        </div>
-    )
-}
+import Link from "next/link";
+import { ArrowRight } from "@deemlol/next-icons";
+
+type Variant =
+  | "sapin"
+  | "lime"
+  | "peach"
+  | "sapin-outline"
+  | "lime-outline"
+  | "peach-outline";
 
 interface ButtonProps {
   label: string;
-  onClick: () => void;
-  disabled?: boolean;
-  variant?: "primary" | "secondary" | "tertiary" | "foruthary";
+  href: string;
+  variant?: Variant;
 }
 
-const variants = {
-  primary: "bg-color-sapin",
-  secondary:  "bg-color-cream",
-  tertiary: "bg-color-peach",
-  foruthary: "bg-color-lime",
-};
+export default function Button({
+  label,
+  href,
+  variant
+}: ButtonProps) {
+  const variantStyles =
+    variant === "sapin"
+      ? "bg-sapin text-cream hover:bg-sapin/90"
+      : variant === "lime"
+        ? "bg-lime text-sapin hover:bg-lime/80"
+        : variant === "peach"
+          ? "bg-peach text-cream hover:bg-peach/90"
+          : variant === "sapin-outline"
+            ? "border border-sapin text-sapin hover:bg-sapin hover:text-cream"
+            : variant === "lime-outline"
+              ? "border border-lime text-sapin hover:bg-lime"
+              : "border border-peach text-peach hover:bg-peach hover:text-cream";
 
-const Button = ({ label, onClick, disabled = false, variant = "primary" }: ButtonProps) => {
   return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      className={`${variants[variant]} px-4 py-2 rounded transition-colors`}
+    <Link
+      href={href}
+      className={`group inline-flex items-center gap-3 px-7 py-3.5 rounded-xl font-semibold transition-colors ${variantStyles}`}
     >
       {label}
-    </button>
+      <ArrowRight
+        size={20}
+        className="transition-transform duration-200 group-hover:translate-x-1"
+      />
+    </Link>
   );
-};
-
-<Button label="Valider" onClick={() => alert("OK")} variant="primary" />
+}
