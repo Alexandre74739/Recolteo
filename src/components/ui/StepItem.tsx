@@ -25,7 +25,7 @@ export default function StepItem({ icon, title, description, isLast, accent }: S
 
       <div className={isLast ? "pb-0" : "pb-7"}>
         <p className="font-bold text-sm text-sapin mb-1 leading-snug">{title}</p>
-        <p className="text-sm text-sapin/45 leading-relaxed">{description}</p>
+        <p className="text-sm text-sapin/50 leading-relaxed">{description}</p>
       </div>
     </div>
   );

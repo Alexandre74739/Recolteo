@@ -21,10 +21,10 @@ export default function ProfileCard({ role, subtitle, accent, cta, steps }: Prof
     <div className="rounded-2xl overflow-hidden shadow-md flex flex-col">
 
       <div className={`${headerBg} px-6 pt-6 pb-8 sm:px-8 sm:pt-7`}>
-        <span className="inline-flex px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide mb-4 bg-cream/15 text-cream">
+        <span className="inline-flex px-2.5 py-1 rounded-full text-xs font-bold tracking-wide mb-4 bg-cream/15 text-cream">
           {role}
         </span>
-        <p className="font-bold text-cream text-base leading-snug">{subtitle}</p>
+        <p className="font-bold text-cream leading-snug">{subtitle}</p>
       </div>
 
       <div className="bg-cream flex flex-col flex-1">

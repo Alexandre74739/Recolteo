@@ -34,7 +34,7 @@ export const profiles: ProfileDef[] = [
       {
         icon: "FileText",
         title: "Je reçois mon reçu CERFA",
-        description: "Le formulaire fiscal est généré automatiquement — déductible de vos impôts.",
+        description: "Le formulaire fiscal est généré automatiquement et déductible de vos impôts.",
       },
     ],
   },

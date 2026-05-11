@@ -6,7 +6,6 @@ export default function HowItWorks() {
   return (
     <section className="px-4 sm:px-6 lg:px-8 py-20 sm:py-28">
       <div className="max-w-7xl mx-auto">
-
         <div className="mb-12">
           <Reveal delay={0.15}>
             <h2 className="text-sapin font-black mb-4">
@@ -16,7 +15,7 @@ export default function HowItWorks() {
             </h2>
           </Reveal>
           <Reveal delay={0.3}>
-            <p className="text-sapin/55 max-w-md leading-relaxed">
+            <p className="text-sapin max-w-md leading-relaxed">
               Deux acteurs, une plateforme. Chaque don devient une ressource
               utile, chaque échange génère son reçu fiscal automatiquement.
             </p>
@@ -30,7 +29,6 @@ export default function HowItWorks() {
             </Reveal>
           ))}
         </div>
-
       </div>
     </section>
   );
