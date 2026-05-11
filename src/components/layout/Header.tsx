@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ShoppingBag, Menu, X } from "@deemlol/next-icons";
+import Btn from "../ui/Button";
 
 const navLinks = [
   { label: "Marché", href: "/marche" },
@@ -47,12 +48,9 @@ export default function Header() {
               <ShoppingBag size={20} />
             </Link>
 
-            <Link
-              href="/login"
-              className="hidden sm:flex items-center bg-sapin text-cream text-sm font-semibold px-4 py-2 rounded-xl hover:bg-sapin/85 active:scale-95 transition-all duration-150"
-            >
-              Se connecter
-            </Link>
+            <div className="hidden sm:block">
+              <Btn label="Se connecter" href="/login" variant="sapin" size="sm" showArrow={false} />
+            </div>
 
             <button
               onClick={() => setOpen((v) => !v)}
@@ -77,12 +75,7 @@ export default function Header() {
               </Link>
             ))}
             <div className="mt-2 pt-3 border-t border-sapin/10">
-              <Link
-                href="/login"
-                className="flex items-center justify-center bg-sapin text-cream text-sm font-semibold px-4 py-2.5 rounded-xl hover:bg-sapin/85 transition-all duration-150"
-              >
-                Se connecter
-              </Link>
+              <Btn label="Se connecter" href="/login" variant="sapin" size="sm" showArrow={false} />
             </div>
           </div>
         )}
