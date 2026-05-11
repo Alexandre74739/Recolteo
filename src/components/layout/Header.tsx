@@ -3,7 +3,7 @@ import Btn from "../ui/Button";
 
 export default function Header() {
   return (
-    <header className="w-full fixed top-0 border-3 border-sapin gap-4 flex items-center px-8 py-4 rounded-xl">
+    <header className="fixed left-4 right-4 top-0 border-3 border-sapin gap-4 flex items-center px-8 py-4 rounded-xl">
         <p className="text-sapin text-4xl font-bold">Récoltéo</p>
         <ul className="flex gap-6 items-center">
             <li>
