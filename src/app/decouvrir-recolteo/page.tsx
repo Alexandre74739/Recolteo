@@ -1,5 +1,7 @@
 import Hero from "../../components/sections/Hero";
 import About from "@/src/components/sections/About";
+import Pricing from "@/src/components/sections/Pricing";
+import Faq from "@/src/components/sections/Faq";
 
 export default function DecouvrirRecolteo() {
   return (
@@ -17,6 +19,8 @@ export default function DecouvrirRecolteo() {
         secondaryButtonHref="#faq"
       />
       <About />
+      <Pricing />
+      <Faq />
     </main>
   );
 }
