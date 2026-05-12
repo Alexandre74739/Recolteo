@@ -1,14 +1,38 @@
 import Btn from "../components/ui/Button";
+import Reveal from "../components/animations/Reveal";
 
 export default function NotFound() {
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center px-4 relative overflow-hidden">
-            <h1 className="text-5xl text-center font-bold text-sapin">404</h1>
-            <h2 className="text-xl sm:text-2xl font-semibold text-sapin text-center tracking-tight mt-1">Page Not Found</h2>
-            <p className="text-sapin text-center text-sm max-w-[280px] leading-relaxed">The page you are looking for does not exist.</p>
-            <div className="flex justify-center mt-4">
-                <Btn label="Retour à l'accueil" href="/" variant="sapin" size="sm" showArrow={false} />
-            </div>
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center gap-3 px-4 text-center">
+
+      <Reveal delay={0}>
+        <h1 className="text-sapin font-black leading-none tracking-tighter">
+          404
+        </h1>
+      </Reveal>
+
+      <Reveal delay={0.15}>
+        <h2 className="text-sapin">Vous êtes perdus ?</h2>
+      </Reveal>
+
+      <Reveal delay={0.3}>
+        <p className="text-sapin/50 max-w-xs">
+          Cette page n'existe pas. On ne sait pas non plus comment vous avez atterri ici.
+        </p>
+      </Reveal>
+
+      <Reveal delay={0.45}>
+        <p className="text-peach/70 italic">
+          "Ce n'est pas votre faute... enfin, peut-être un peu."
+        </p>
+      </Reveal>
+
+      <Reveal delay={0.6}>
+        <div className="mt-2">
+          <Btn label="Retour à l'accueil" href="/" variant="sapin" size="md" showArrow={true} />
         </div>
-    );
+      </Reveal>
+
+    </div>
+  );
 }
