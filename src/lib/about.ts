@@ -1,4 +1,4 @@
-export type AboutValueKey = "Zap" | "TrendingUp" | "Shield";
+export type AboutValueKey = "Zap" | "TrendingUp" | "Shield" | "Heart";
 
 export type AboutStat = {
   value: string;
@@ -11,16 +11,8 @@ export type AboutValue = {
   description: string;
 };
 
-export const aboutMission = {
-  label: "Notre mission",
-  headline: "Chaque invendu mérite",
-  highlight: "une seconde vie.",
-  description:
-    "Récoltéo connecte commerçants et associations pour transformer le gaspillage alimentaire en solidarité concrète — simplement, légalement, durablement.",
-};
-
 export const aboutStats: AboutStat[] = [
-  { value: "500+", label: "tonnes valorisées" },
+  { value: "500+", label: "échanges réalisés" },
   { value: "150+", label: "commerçants engagés" },
   { value: "80+", label: "associations partenaires" },
 ];
@@ -42,6 +34,12 @@ export const aboutValues: AboutValue[] = [
     icon: "Shield",
     title: "Conformité garantie",
     description:
-      "Récoltéo génère automatiquement les documents légaux requis — CERFA, reçus fiscaux — sans erreur ni délai.",
+      "Récoltéo génère automatiquement les documents légaux requis —avec un formulaire CERFA personnalisé, sans erreur ni délai.",
+  },
+  {
+    icon: "Heart",
+    title: "Solidarité concrète",
+    description:
+      "Chaque don crée un lien direct entre votre commerce et des associations locales. Votre surplus nourrit des familles, pas des poubelles.",
   },
 ];
