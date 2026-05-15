@@ -61,7 +61,7 @@ export default function VideoDemo() {
                 <ul className="flex flex-col gap-3">
                   {demo.points.map((point) => (
                     <li key={point} className="flex items-center gap-3">
-                      <span className="w-6 h-6 shrink-0 bg-lime rounded-full flex items-center justify-center text-sapin">
+                      <span className="w-6 h-6 shrink-0 bg-lime border border-sapin shadow-[2px_2px_0_0_#06573F] rounded-full flex items-center justify-center text-sapin">
                         <Check size={16} />
                       </span>
                       <span className="text-sapin font-bold">{point}</span>
