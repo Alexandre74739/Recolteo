@@ -44,6 +44,7 @@ export function Fleche({ color = "#f16012", className }: { color?: string; class
   );
 }
 
+const SPRING_SECTION = { type: "spring", stiffness: 200, damping: 26 } as const;
 const SPRING_STAR = { type: "spring", stiffness: 260, damping: 18 } as const;
 const SPRING_LEAF = { type: "spring", stiffness: 220, damping: 20 } as const;
 const SPRING_CIRCLE = { type: "spring", stiffness: 260, damping: 18 } as const;
@@ -197,6 +198,181 @@ export function HeroDecorations() {
         >
           <Star color="#06573F" />
         </motion.div>
+      </motion.div>
+
+    </div>
+  );
+}
+
+export function CategoriesDecorations() {
+  return (
+    <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+
+      <motion.div
+        className="absolute top-8 right-4 sm:top-10 sm:right-[4%] lg:right-[6%] w-6 sm:w-7 lg:w-8"
+        initial={{ opacity: 0, y: -50, scale: 0 }}
+        whileInView={{ opacity: 0.7, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ ...SPRING_SECTION, delay: 0.1 }}
+      >
+        <Star color="#f16012" />
+      </motion.div>
+
+      <motion.div
+        className="absolute -bottom-16 -left-10 sm:-left-6 w-40 sm:w-52 lg:w-60 opacity-[0.07]"
+        initial={{ opacity: 0, x: -60, scale: 0.6 }}
+        whileInView={{ opacity: 0.07, x: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ ...SPRING_SECTION, delay: 0.2 }}
+      >
+        <CircleDecor color="#06573F" />
+      </motion.div>
+
+      <motion.div
+        className="hidden lg:block absolute top-[40%] -right-5 w-16 opacity-40"
+        initial={{ opacity: 0, x: 50, rotate: 40 }}
+        whileInView={{ opacity: 0.4, x: 0, rotate: 25 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ ...SPRING_SECTION, delay: 0.3 }}
+      >
+        <LeafEmpty color="#c9f242" />
+      </motion.div>
+
+      <motion.div
+        className="hidden lg:block absolute bottom-4 right-[5%] w-14 opacity-30"
+        initial={{ opacity: 0, y: 40, rotate: -20 }}
+        whileInView={{ opacity: 0.3,x: -80, y: 0, rotate: -5 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ ...SPRING_SECTION, delay: 0.4 }}
+      >
+        <LeafEmpty color="#06573F" />
+      </motion.div>
+
+      <motion.div
+        className="hidden sm:block absolute bottom-8 left-[5%] sm:left-[8%] w-5"
+        initial={{ opacity: 0, y: 40, scale: 0 }}
+        whileInView={{ opacity: 0.5, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ ...SPRING_SECTION, delay: 0.25 }}
+      >
+        <Star color="#06573F" />
+      </motion.div>
+
+    </div>
+  );
+}
+
+export function HowItWorksDecorations() {
+  return (
+    <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+
+      <motion.div
+        className="absolute top-6 right-3 sm:top-10 sm:right-[3%] lg:top-12 lg:right-[5%] w-14 sm:w-16 lg:w-20 opacity-60"
+        initial={{ opacity: 0, x: 60, y: -40, rotate: 30 }}
+        whileInView={{ opacity: 0.6, x: 0, y: 0, rotate: 18 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ ...SPRING_SECTION, delay: 0.1 }}
+      >
+        <LeafFull />
+      </motion.div>
+
+      <motion.div
+        className="absolute bottom-8 left-[4%] sm:bottom-12 sm:left-[6%] w-5 sm:w-6"
+        initial={{ opacity: 0, y: 50, scale: 0 }}
+        whileInView={{ opacity: 0.65, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ ...SPRING_SECTION, delay: 0.2 }}
+      >
+        <Star color="#c9f242" />
+      </motion.div>
+
+      <motion.div
+        className="absolute -bottom-14 -right-10 w-44 sm:w-56 lg:w-64 opacity-[0.07]"
+        initial={{ opacity: 0, x: 50, scale: 0.6 }}
+        whileInView={{ opacity: 0.07, x: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ ...SPRING_SECTION, delay: 0.3 }}
+      >
+        <CircleDecor color="#f16012" />
+      </motion.div>
+
+      <motion.div
+        className="hidden lg:block absolute top-[52%] right-[9%] w-5 opacity-50"
+        initial={{ opacity: 0, scale: 0, x: 30 }}
+        whileInView={{ opacity: 0.5, scale: 1, x: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ ...SPRING_SECTION, delay: 0.35 }}
+      >
+        <Star color="#f16012" />
+      </motion.div>
+
+      <motion.div
+        className="hidden lg:block absolute top-8 left-[4%] w-12 opacity-25"
+        initial={{ opacity: 0, x: -40, rotate: -30 }}
+        whileInView={{ opacity: 0.25, x: 0, rotate: -15 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ ...SPRING_SECTION, delay: 0.25 }}
+      >
+        <LeafEmpty color="#06573F" />
+      </motion.div>
+
+    </div>
+  );
+}
+
+export function AboutDecorations() {
+  return (
+    <div className="absolute inset-0 pointer-events-none select-none" aria-hidden="true">
+
+      <motion.div
+        className="absolute top-8 right-4 sm:top-12 sm:right-[5%] lg:right-[8%] w-6 sm:w-7"
+        initial={{ opacity: 0, y: -40, scale: 0 }}
+        whileInView={{ opacity: 0.7, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ ...SPRING_SECTION, delay: 0.1 }}
+      >
+        <Star color="#f16012" />
+      </motion.div>
+
+      <motion.div
+        className="absolute -top-20 -left-16 w-56 sm:w-72 lg:w-80 opacity-[0.06]"
+        initial={{ opacity: 0, scale: 0.5 }}
+        whileInView={{ opacity: 0.06, scale: 1 }}
+        viewport={{ once: true, amount: 0.05 }}
+        transition={{ ...SPRING_SECTION, delay: 0.15 }}
+      >
+        <CircleDecor color="#c9f242" />
+      </motion.div>
+
+      
+      <motion.div
+        className="hidden lg:block absolute top-[42%] -left-4 w-14 opacity-20"
+        initial={{ opacity: 0, x: -40, rotate: -40 }}
+        whileInView={{ opacity: 0.2, x: 0, rotate: -20 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ ...SPRING_SECTION, delay: 0.3 }}
+      >
+        <LeafEmpty color="#06573F" />
+      </motion.div>
+
+      <motion.div
+        className="absolute bottom-10 right-[5%] sm:right-[8%] w-5 sm:w-6 opacity-40"
+        initial={{ opacity: 0, y: 40, scale: 0 }}
+        whileInView={{ opacity: 0.4, y: 0, scale: 1 }}
+        viewport={{ once: true, amount: 0.15 }}
+        transition={{ ...SPRING_SECTION, delay: 0.25 }}
+      >
+        <Star color="#06573F" />
+      </motion.div>
+
+      <motion.div
+        className="hidden sm:block absolute -bottom-8 left-[2%] w-16 sm:w-20 opacity-20"
+        initial={{ opacity: 0, x: -30, y: 30 }}
+        whileInView={{ opacity: 0.2, x: 0, y: 0 }}
+        viewport={{ once: true, amount: 0.1 }}
+        transition={{ ...SPRING_SECTION, delay: 0.35 }}
+      >
+        <LeafFull />
       </motion.div>
 
     </div>

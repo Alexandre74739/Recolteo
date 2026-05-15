@@ -43,7 +43,9 @@ export default function Footer() {
                 <span className="text-lime italic">la différence ?</span>
               </h2>
             </div>
-            <Btn label="Créer un compte" href="/login" variant="lime" />
+            <div className="self-start sm:self-auto">
+              <Btn label="Créer un compte" href="/login" variant="lime" />
+            </div>
           </div>
         </div>
 
