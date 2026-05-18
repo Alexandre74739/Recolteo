@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Hero from "../../components/sections/Hero";
-import Reveal from "../../components/animations/Reveal";
+import Hero from "@/src/components/sections/Hero";
+import Reveal from "@/src/components/animations/Reveal";
 
 export default function Contact() {
     const [sent, setSent] = useState(false);
