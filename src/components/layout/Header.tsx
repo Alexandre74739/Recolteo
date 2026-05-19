@@ -1,9 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
-import { ShoppingBag, Menu, X } from "@deemlol/next-icons";
+import { Menu, X } from "@deemlol/next-icons";
 import Btn from "../ui/Button";
+import { signOut } from "@/src/app/login/actions";
+
+type UserInfo = {
+  nom: string;
+  role: "commercant" | "association" | "admin";
+};
+
+interface HeaderProps {
+  user?: UserInfo;
+}
 
 const navLinks = [
   { label: "Accueil", href: "/" },
@@ -12,8 +22,12 @@ const navLinks = [
   { label: "Contact", href: "/contact" },
 ];
 
-export default function Header() {
+export default function Header({ user }: HeaderProps) {
   const [open, setOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  const adminLink = { label: "Admin", href: "/admin" };
+  const links = user?.role === "admin" ? [...navLinks, adminLink] : navLinks;
 
   return (
     <div className="fixed top-3 left-0 right-0 z-50 px-4">
@@ -27,7 +41,7 @@ export default function Header() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-0.5">
-            {navLinks.map(({ label, href }) => (
+            {links.map(({ label, href }) => (
               <Link
                 key={href}
                 href={href}
@@ -39,23 +53,30 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center gap-2 shrink-0">
-            <Link
-              href="/panier"
-              aria-label="Panier"
-              className="relative p-2 rounded-xl text-sapin hover:text-sapin hover:bg-sapin/10 transition-all duration-150"
-            >
-              <ShoppingBag size={20} />
-            </Link>
-
-            <div className="hidden sm:block">
-              <Btn
-                label="Se connecter"
-                href="/login"
-                variant="sapin"
-                size="sm"
-                showArrow={false}
-              />
-            </div>
+            {user ? (
+              <div className="hidden sm:flex items-center gap-2">
+                <span className="text-sm font-semibold text-sapin/70 max-w-[140px] truncate">
+                  {user.nom}
+                </span>
+                <button
+                  onClick={() => startTransition(() => signOut())}
+                  disabled={isPending}
+                  className="px-4 py-2 rounded-xl border-2 border-sapin/20 text-sapin text-sm font-semibold hover:bg-sapin hover:text-cream hover:border-sapin transition-all duration-150 disabled:opacity-50"
+                >
+                  {isPending ? "…" : "Déconnexion"}
+                </button>
+              </div>
+            ) : (
+              <div className="hidden sm:block">
+                <Btn
+                  label="Se connecter"
+                  href="/login"
+                  variant="sapin"
+                  size="sm"
+                  showArrow={false}
+                />
+              </div>
+            )}
 
             <button
               onClick={() => setOpen((v) => !v)}
@@ -69,7 +90,7 @@ export default function Header() {
 
         {open && (
           <div className="md:hidden border-t-2 border-sapin/10 px-4 pb-4 pt-3 flex flex-col gap-1">
-            {navLinks.map(({ label, href }) => (
+            {links.map(({ label, href }) => (
               <Link
                 key={href}
                 href={href}
@@ -80,13 +101,28 @@ export default function Header() {
               </Link>
             ))}
             <div className="mt-2 pt-3 border-t border-sapin/10">
-              <Btn
-                label="Se connecter"
-                href="/login"
-                variant="sapin"
-                size="sm"
-                showArrow={false}
-              />
+              {user ? (
+                <div className="flex flex-col gap-2">
+                  <p className="text-sm font-semibold text-sapin/60 px-1">
+                    {user.nom}
+                  </p>
+                  <button
+                    onClick={() => startTransition(() => signOut())}
+                    disabled={isPending}
+                    className="w-full px-4 py-2.5 rounded-xl border-2 border-sapin/20 text-sapin text-sm font-semibold hover:bg-sapin hover:text-cream transition-all disabled:opacity-50"
+                  >
+                    {isPending ? "…" : "Se déconnecter"}
+                  </button>
+                </div>
+              ) : (
+                <Btn
+                  label="Se connecter"
+                  href="/login"
+                  variant="sapin"
+                  size="sm"
+                  showArrow={false}
+                />
+              )}
             </div>
           </div>
         )}
@@ -94,4 +130,3 @@ export default function Header() {
     </div>
   );
 }
-
