@@ -1,10 +1,15 @@
-﻿export default function MentionsLegales() {
-  return (
-    <div className="max-w-3xl mx-auto px-6 py-16 text-base leading-8 text-sapin/90">
-      <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-sapin mb-10">
-        Mentions légales et conditions d'utilisation
-      </h1>
+﻿import Reveal from "@/src/components/animations/Reveal";
 
+export default function MentionsLegales() {
+  return (
+    <div className="max-w-3xl mx-auto px-6 py-16 text-base leading-8 text-sapin">
+      <Reveal delay={0.5}>
+      <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-sapin mb-10">
+        Mentions légales
+      </h1>
+      </Reveal>
+
+      <Reveal delay={0.7}>
       <section className="mb-8">
         <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">1. Éditeur</h2>
         <ul className="space-y-1">
@@ -24,12 +29,16 @@
           <li><span className="font-medium">Co-gérants :</span> Isabelle Colombera, Florian Cipriani, Kérian Boukaala</li>
         </ul>
       </section>
+      </Reveal>
 
+      <Reveal delay={1.0}>
       <section className="mb-8">
         <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">2. Hébergement de la plateforme</h2>
         <p>Vercel Inc. (États-Unis)</p>
       </section>
+      </Reveal>
 
+      <Reveal delay={0.5}>
       <section className="mb-8">
         <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">3. Propriété intellectuelle</h2>
         <p className="mb-3">
@@ -53,7 +62,9 @@
           intellectuelle.
         </p>
       </section>
+      </Reveal>
 
+      <Reveal delay={0.75}>
       <section className="mb-8">
         <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">4. Crédit photo/vidéo</h2>
         <p className="mb-3">
@@ -66,7 +77,9 @@
         </p>
         <p>Les auteurs des images restent propriétaires de leurs œuvres respectives.</p>
       </section>
+      </Reveal>
 
+      <Reveal delay={1.0}>
       <section className="mb-8">
         <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">5. Responsabilité de l'éditeur</h2>
         <p className="mb-3">
@@ -86,7 +99,9 @@
           vérifier les informations obtenues avant toute utilisation.
         </p>
       </section>
+      </Reveal>
 
+      <Reveal delay={0.5}>
       <section className="mb-8">
         <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">
           6. Modification du site et mise à jour des conditions d'utilisation
@@ -97,7 +112,9 @@
           connaissance des conditions applicables.
         </p>
       </section>
+      </Reveal>
 
+      <Reveal delay={0.75}>
       <section className="mb-8">
         <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">7. Droit applicable</h2>
         <p className="mb-3">
@@ -116,7 +133,9 @@
           <li>la loi n°78-17 du 6 janvier 1978 relative à l'informatique, aux fichiers et aux libertés.</li>
         </ul>
       </section>
+      </Reveal>
 
+      <Reveal delay={1.0}>
       <section className="mb-8">
         <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">8. Activités interdites sur le site</h2>
         <p className="mb-2">En tant qu'utilisateur, vous acceptez de ne pas :</p>
@@ -132,7 +151,9 @@
           <li>Utiliser la plateforme d'une manière incompatible avec les lois applicables.</li>
         </ul>
       </section>
+      </Reveal>
 
+      <Reveal delay={0.5}>
       <section className="mb-8">
         <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">9. Création d'un compte utilisateur</h2>
         <p className="mb-3">
@@ -154,6 +175,7 @@
           par vous-même.
         </p>
       </section>
+      </Reveal>
     </div>
   );
 }
