@@ -23,7 +23,7 @@ const navLinks = [
 
 function getInitials(nom: string): string {
   const [prenom, famille] = nom.trim().split(/\s+/);
-  return (prenom[0] + famille[0]).toUpperCase();
+  // return (prenom[0] + famille[0]).toUpperCase();
 }
 
 function CartButton() {

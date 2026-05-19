@@ -1,4 +1,4 @@
-﻿import Reveal from "@/src/components/animations/Reveal";
+import Reveal from "@/src/components/animations/Reveal";
 
 export default function MentionsLegales() {
   return (
@@ -179,4 +179,3 @@ export default function MentionsLegales() {
     </div>
   );
 }
-
