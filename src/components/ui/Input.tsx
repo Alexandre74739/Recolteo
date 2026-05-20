@@ -8,6 +8,7 @@ interface InputProps {
   min?: string | number;
   max?: string | number;
   defaultValue?: string | number;
+  rows?: number;
 }
 
 export default function Input({
@@ -20,24 +21,40 @@ export default function Input({
   min,
   max,
   defaultValue,
+  rows,
 }: InputProps) {
+  const baseClass =
+    "px-4 py-3 rounded-xl border-2 border-sapin/20 bg-white focus:border-sapin focus:outline-none transition-colors text-sm font-medium placeholder:text-sapin/30 text-sapin";
+
   return (
     <div className="flex flex-col gap-1.5">
       <label htmlFor={id} className="text-sm font-semibold text-sapin">
         {label}
         {required && <span className="text-peach ml-1">*</span>}
       </label>
-      <input
-        id={id}
-        name={name}
-        type={type}
-        required={required}
-        placeholder={placeholder}
-        min={min}
-        max={max}
-        defaultValue={defaultValue}
-        className="px-4 py-3 rounded-xl border-2 border-sapin/20 bg-white focus:border-sapin focus:outline-none transition-colors text-sm font-medium placeholder:text-sapin/30 text-sapin"
-      />
+      {rows ? (
+        <textarea
+          id={id}
+          name={name}
+          required={required}
+          placeholder={placeholder}
+          defaultValue={defaultValue}
+          rows={rows}
+          className={`${baseClass} resize-none`}
+        />
+      ) : (
+        <input
+          id={id}
+          name={name}
+          type={type}
+          required={required}
+          placeholder={placeholder}
+          min={min}
+          max={max}
+          defaultValue={defaultValue}
+          className={baseClass}
+        />
+      )}
     </div>
   );
 }
