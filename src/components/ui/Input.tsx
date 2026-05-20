@@ -1,66 +1,30 @@
-import type { ChangeEventHandler } from "react";
-
 interface InputProps {
+  id: string;
   name: string;
-  id?: string;
-  label?: string;
+  label: string;
   type?: string;
-  placeholder?: string;
-  value?: string;
-  onChange?: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  rows?: number;
   required?: boolean;
+  placeholder?: string;
   min?: string | number;
   max?: string | number;
   defaultValue?: string | number;
+  rows?: number;
 }
 
-const inputClass =
-  "px-4 py-3 rounded-xl border-2 border-sapin/20 bg-white focus:border-sapin focus:outline-none transition-colors text-sm font-medium placeholder:text-sapin/30 text-sapin w-full";
-
 export default function Input({
-  name,
   id,
+  name,
   label,
   type = "text",
-  placeholder,
-  value,
-  onChange,
-  rows,
   required,
+  placeholder,
   min,
   max,
   defaultValue,
+  rows,
 }: InputProps) {
-  const field =
-    type === "textarea" ? (
-      <textarea
-        id={id}
-        name={name}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange as ChangeEventHandler<HTMLTextAreaElement>}
-        rows={rows ?? 4}
-        required={required}
-        className={`${inputClass} resize-none`}
-      />
-    ) : (
-      <input
-        id={id}
-        name={name}
-        type={type}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange as ChangeEventHandler<HTMLInputElement>}
-        required={required}
-        min={min}
-        max={max}
-        defaultValue={defaultValue}
-        className={inputClass}
-      />
-    );
-
-  if (!label) return field;
+  const baseClass =
+    "px-4 py-3 rounded-xl border-2 border-sapin/20 bg-white focus:border-sapin focus:outline-none transition-colors text-sm font-medium placeholder:text-sapin/30 text-sapin";
 
   return (
     <div className="flex flex-col gap-1.5">
@@ -68,7 +32,29 @@ export default function Input({
         {label}
         {required && <span className="text-peach ml-1">*</span>}
       </label>
-      {field}
+      {rows ? (
+        <textarea
+          id={id}
+          name={name}
+          required={required}
+          placeholder={placeholder}
+          defaultValue={defaultValue}
+          rows={rows}
+          className={`${baseClass} resize-none`}
+        />
+      ) : (
+        <input
+          id={id}
+          name={name}
+          type={type}
+          required={required}
+          placeholder={placeholder}
+          min={min}
+          max={max}
+          defaultValue={defaultValue}
+          className={baseClass}
+        />
+      )}
     </div>
   );
 }
