@@ -1,31 +1,27 @@
 "use client";
-
+ 
 import { useState } from "react";
 import Link from "next/link";
 import { Menu, X, ShoppingCart } from "@deemlol/next-icons";
 import Btn from "../ui/Button";
-
+ 
 type UserInfo = {
   nom: string;
   role: "commercant" | "association" | "admin";
 };
-
+ 
 interface HeaderProps {
   user?: UserInfo;
 }
-
+ 
 const navLinks = [
   { label: "Accueil", href: "/" },
   { label: "Découvrir Récoltéo", href: "/decouvrir-recolteo" },
   { label: "Dashboard", href: "/dashboard" },
   { label: "Contact", href: "/contact" },
 ];
-
-function getInitials(nom: string): string {
-  const [prenom, famille] = nom.trim().split(/\s+/);
-  // return (prenom[0] + famille[0]).toUpperCase();
-}
-
+ 
+ 
 function CartButton() {
   return (
     <button className="relative p-2 rounded-xl text-sapin hover:bg-sapin/10 transition-all">
@@ -36,13 +32,13 @@ function CartButton() {
     </button>
   );
 }
-
+ 
 export default function Header({ user }: HeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
-
+ 
   const adminLink = { label: "Admin", href: "/admin" };
   const links = user?.role === "admin" ? [...navLinks, adminLink] : navLinks;
-
+ 
   return (
     <div className="fixed top-3 left-0 right-0 z-50 px-4">
       <header className="max-w-7xl mx-auto bg-cream/90 backdrop-blur-sm border-2 border-sapin/10 rounded-2xl shadow-sm overflow-hidden">
@@ -53,7 +49,7 @@ export default function Header({ user }: HeaderProps) {
           >
             Récoltéo
           </Link>
-
+ 
           <nav className="hidden md:flex items-center gap-0.5">
             {links.map(({ label, href }) => (
               <Link
@@ -65,17 +61,17 @@ export default function Header({ user }: HeaderProps) {
               </Link>
             ))}
           </nav>
-
+ 
           <div className="flex items-center gap-2 shrink-0">
             {user && <CartButton />}
-
+ 
             {user ? (
               <Link
                 href="/profil"
                 className="hidden md:flex w-9 h-9 rounded-xl bg-sapin text-cream font-black text-sm items-center justify-center hover:bg-sapin/80 transition-all shadow-[3px_3px_0_0_#04251c]"
                 aria-label="Mon compte"
               >
-                {getInitials(user.nom)}
+                {user.nom[0].toUpperCase()}
               </Link>
             ) : (
               <div className="hidden md:block">
@@ -88,7 +84,7 @@ export default function Header({ user }: HeaderProps) {
                 />
               </div>
             )}
-
+ 
             <button
               onClick={() => setMenuOpen((v) => !v)}
               aria-label={menuOpen ? "Fermer le menu" : "Ouvrir le menu"}
@@ -98,7 +94,7 @@ export default function Header({ user }: HeaderProps) {
             </button>
           </div>
         </div>
-
+ 
         {menuOpen && (
           <div className="md:hidden border-t-2 border-sapin/10 px-4 pb-4 pt-3 flex flex-col gap-1">
             {links.map(({ label, href }) => (
@@ -119,7 +115,7 @@ export default function Header({ user }: HeaderProps) {
                   className="flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-sapin font-bold hover:bg-sapin/10 transition-all duration-150"
                 >
                   <span className="w-7 h-7 rounded-lg bg-sapin text-cream font-black text-xs flex items-center justify-center shrink-0">
-                    {getInitials(user.nom)}
+                    {user.nom[0].toUpperCase()}
                   </span>
                   <span className="text-sm truncate">{user.nom}</span>
                 </Link>
