@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, Repeat } from "@deemlol/next-icons";
+import { Menu, X, ShoppingBag } from "@deemlol/next-icons";
 import Btn from "../ui/primitives/Button";
+import { useCart } from "@/src/lib/cart-context";
 
 type UserInfo = {
   nom: string;
@@ -22,11 +23,12 @@ const navLinks = [
 ];
 
 function CartButton() {
+  const { items } = useCart();
   return (
     <button className="relative p-2 rounded-xl text-sapin hover:bg-sapin/10 transition-all">
-      <Repeat size={20} />
+      <ShoppingBag size={20} />
       <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-peach text-cream text-[9px] font-bold flex items-center justify-center leading-none">
-        0
+        {items.length}
       </span>
     </button>
   );
