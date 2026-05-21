@@ -1,4 +1,4 @@
-import { Repeat } from "@deemlol/next-icons";
+import { ShoppingBag } from "@deemlol/next-icons";
 import Btn from "@/src/components/ui/primitives/Button";
 import CatalogueDecorations from "@/src/components/illustrations/CatalogueDecorations";
 import Reveal from "@/src/components/animations/Reveal";
@@ -26,7 +26,7 @@ export default function Panier() {
           <Reveal>
             <div className="relative z-10 text-center max-w-sm mx-auto">
               <div className="w-20 h-20 rounded-3xl bg-lime border border-sapin shadow-[4px_4px_0_0_#06573F] flex items-center justify-center mx-auto mb-8">
-                <Repeat size={32} className="text-sapin" />
+                <ShoppingBag size={32} className="text-sapin" />
               </div>
               <h1 className="text-sapin font-black text-3xl mb-3">
                 Panier vide
