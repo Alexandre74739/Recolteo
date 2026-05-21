@@ -57,8 +57,8 @@ export default async function Dashboard() {
           description="Déclarez vos invendus et mettez-les à disposition des associations partenaires en quelques clics."
           primaryButton="Déclarer un lot"
           primaryButtonHref="/dashboard/declarer-lot"
-          secondaryButton="Voir les lots"
-          secondaryButtonHref="#lots"
+          secondaryButton="Contactez-nous"
+          secondaryButtonHref="contact"
         />
         <CatalogueLots lots={lots} />
       </main>
