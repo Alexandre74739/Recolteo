@@ -143,7 +143,7 @@ export default async function LotPage() {
         emptyTitle="Aucun lot disponible pour le moment"
         emptySubtitle="Revenez prochainement, de nouveaux lots sont ajoutés régulièrement."
         filterTitle="Affinez votre recherche"
-        filterDescription="Deux filtres sont à votre disposition : filtrez par proximité géographique autour de votre association, ou par date de publication pour voir les lots les plus récents en premier."
+        filterDescription="Les filtres sont à votre disposition : recherchez autour de vous, par date de parution, ou par catégorie de produits. Essayez différentes combinaisons pour trouver les lots qui correspondent le mieux à vos besoins."
         filterRadiusTitle="Par proximité"
         filterRadiusDescription="Filtrez les lots selon la distance autour de vous."
         filterDateTitle="Par date de parution"

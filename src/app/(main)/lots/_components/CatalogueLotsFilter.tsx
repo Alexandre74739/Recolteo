@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapPin, Calendar } from "@deemlol/next-icons";
+import { MapPin, Calendar, Tag, ChevronDown } from "@deemlol/next-icons";
 import {
   readCookieConsent,
   CONSENT_CHANGE_EVENT,
@@ -74,9 +74,13 @@ export default function CatalogueLotsFilter({
   emptyTitle,
   emptySubtitle,
 }: Props) {
+  const [open, setOpen] = useState(false);
   const [geoEnabled, setGeoEnabled] = useState(false);
   const [radiusIndex, setRadiusIndex] = useState(0);
   const [dateIndex, setDateIndex] = useState(0);
+  const [selectedCategories, setSelectedCategories] = useState<Set<string>>(
+    new Set(),
+  );
 
   useEffect(() => {
     const update = () => setGeoEnabled(readCookieConsent().geolocalisation);
@@ -85,12 +89,15 @@ export default function CatalogueLotsFilter({
     return () => window.removeEventListener(CONSENT_CHANGE_EVENT, update);
   }, []);
 
+  const categories = Array.from(new Set(lots.map((l) => l.category))).sort();
+
   const canUseRadius = geoEnabled && assoCoords !== null;
   const applyRadius = canUseRadius && radiusIndex > 0;
   const radiusKm = applyRadius ? RADIUS_STEPS[radiusIndex - 1] : null;
 
   const dateFilter = DATE_FILTER_MAP[dateIndex];
   const isDateFiltered = dateIndex > 0;
+  const isCategoryFiltered = selectedCategories.size > 0;
 
   const filtered = lots.filter((lot) => {
     if (dateFilter === "today" && !isWithinDays(lot.created_at, 1))
@@ -110,16 +117,36 @@ export default function CatalogueLotsFilter({
       if (dist > radiusKm) return false;
     }
 
+    if (isCategoryFiltered && !selectedCategories.has(lot.category))
+      return false;
+
     return true;
   });
 
-  const activeCount = (applyRadius ? 1 : 0) + (isDateFiltered ? 1 : 0);
+  const activeCount =
+    (applyRadius ? 1 : 0) +
+    (isDateFiltered ? 1 : 0) +
+    (isCategoryFiltered ? 1 : 0);
+
+  function toggleCategory(cat: string) {
+    setSelectedCategories((prev) => {
+      const next = new Set(prev);
+      if (next.has(cat)) next.delete(cat);
+      else next.add(cat);
+      return next;
+    });
+  }
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="bg-lime/5 border border-sapin rounded-2xl shadow-[4px_4px_0_0_#06573F] px-6 py-6 flex flex-col gap-6">
-        <div className="flex items-center gap-3 flex-wrap">
-          <div className="flex items-center gap-3 flex-wrap mb-1.5">
+    <div className="flex flex-col gap-12 sm:gap-20">
+      <div className="bg-lime/5 border border-sapin rounded-2xl shadow-[4px_4px_0_0_#06573F] overflow-hidden">
+
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className="w-full px-6 py-5 flex items-center justify-between gap-4 text-left hover:bg-sapin/3 transition-colors"
+        >
+          <div className="flex items-center gap-3 flex-wrap">
             <h3 className="font-black text-sapin leading-tight">{title}</h3>
             {activeCount > 0 && (
               <span className="px-2.5 py-1 bg-sapin text-lime text-xs font-bold rounded-full leading-none">
@@ -128,37 +155,101 @@ export default function CatalogueLotsFilter({
               </span>
             )}
           </div>
-          <p className="text-sapin">{description}</p>
-        </div>
+          <ChevronDown
+            size={32}
+            className={`shrink-0 text-sapin transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+          />
+        </button>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-10">
-          <FilterPart
-            icon={<MapPin size={20} />}
-            title={radiusTitle}
-            subtitle={radiusDescription}
-            isActive={applyRadius}
-          >
-            <RadiusSlider
-              value={radiusIndex}
-              onChange={setRadiusIndex}
-              withOff
-              disabled={!canUseRadius}
-            />
-          </FilterPart>
+        <p className="sm:text-lg text-base px-6 pb-6 text-sapin leading-relaxed">{description}</p>
 
-          <FilterPart
-            icon={<Calendar size={20} />}
-            title={dateTitle}
-            subtitle={dateDescription}
-            isActive={isDateFiltered}
-          >
-            <StepSlider
-              steps={DATE_STEPS}
-              value={dateIndex}
-              onChange={setDateIndex}
-              label="Période de parution"
-            />
-          </FilterPart>
+        <div
+          className={`grid transition-all duration-300 ease-in-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+        >
+          <div className="overflow-hidden">
+            <div className="px-6 pb-6 flex flex-col gap-6">
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-10">
+                <FilterPart
+                  icon={<MapPin size={20} />}
+                  title={radiusTitle}
+                  subtitle={radiusDescription}
+                  isActive={applyRadius}
+                >
+                  <RadiusSlider
+                    value={radiusIndex}
+                    onChange={setRadiusIndex}
+                    withOff
+                    disabled={!canUseRadius}
+                  />
+                </FilterPart>
+
+                <FilterPart
+                  icon={<Calendar size={20} />}
+                  title={dateTitle}
+                  subtitle={dateDescription}
+                  isActive={isDateFiltered}
+                >
+                  <StepSlider
+                    steps={DATE_STEPS}
+                    value={dateIndex}
+                    onChange={setDateIndex}
+                    label="Période de parution"
+                  />
+                </FilterPart>
+              </div>
+
+              {categories.length > 0 && (
+                <>
+                  <div className="h-px bg-sapin/10" />
+                  <FilterPart
+                    icon={<Tag size={20} />}
+                    title="Par catégorie"
+                    subtitle="Sélectionnez un ou plusieurs types de lots."
+                    isActive={isCategoryFiltered}
+                  >
+                    <div className="flex flex-wrap gap-2">
+                      {categories.map((cat) => {
+                        const checked = selectedCategories.has(cat);
+                        return (
+                          <button
+                            key={cat}
+                            type="button"
+                            onClick={() => toggleCategory(cat)}
+                            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-sm font-semibold transition-all duration-150 ${checked
+                                ? "bg-sapin text-lime border-sapin"
+                                : "bg-lime/20 text-sapin/60 border-sapin/20 hover:border-sapin/50 hover:text-sapin hover:bg-lime/40"
+                              }`}
+                          >
+                            <span
+                              className={`w-3.5 h-3.5 rounded-sm border-2 flex items-center justify-center shrink-0 transition-colors ${checked
+                                  ? "bg-lime border-lime"
+                                  : "border-current opacity-50"
+                                }`}
+                            >
+                              {checked && (
+                                <svg viewBox="0 0 10 8" className="w-2 h-2">
+                                  <path
+                                    d="M1 4l3 3 5-6"
+                                    stroke="#06573F"
+                                    strokeWidth="1.8"
+                                    fill="none"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                </svg>
+                              )}
+                            </span>
+                            {cat}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </FilterPart>
+                </>
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
