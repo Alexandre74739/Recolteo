@@ -1,30 +1,100 @@
 "use client";
 
 import Image from "next/image";
+import { useState, useEffect } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import Ecureuil from "@/src/asset/ecureuil.webp";
-import { motion, AnimatePresence } from "motion/react";
-import { useLeo } from "@/src/lib/data/useLeo";
 
-interface LeoProps {
-  storageKey: string;
-  steps: { message: string }[];
+interface LeoStep {
+  message: string;
 }
 
-export default function Leo({ storageKey, steps }: LeoProps) {
-  const { step, show, hasSeen, visible, isLastStep, currentMessage, totalSteps, dismiss, next } =
-    useLeo({ storageKey, steps });
+interface UseLeoOptions {
+  storageKey?: string;
+  steps: LeoStep[];
+}
 
-  if (hasSeen) return null;
+export function useLeo({ storageKey, steps }: UseLeoOptions) {
+  const [step, setStep] = useState(0);
+  const [show, setShow] = useState(false);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const key = storageKey ?? "recolteo_leo_seen_v1";
+    try {
+      const seen = localStorage.getItem(key);
+      if (seen) {
+        setShow(false);
+      } else {
+        setShow(true);
+      }
+    } catch (err) {
+      setShow(true);
+    }
+    setShow(true);
+  }, [storageKey]);
+
+  useEffect(() => {
+    document.body.style.overflow = show ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [show]);
+
+  const dismiss = () => {
+    const key = storageKey ?? "recolteo_leo_seen_v1";
+    try {
+      localStorage.setItem(key, "1");
+    } catch (err) {
+    }
+    setShow(false);
+  };
+
+  const next = () => {
+    if (step < steps.length - 1) {
+      setVisible(false);
+      setTimeout(() => {
+        setStep((s) => s + 1);
+        setVisible(true);
+      }, 250);
+    } else {
+      dismiss();
+    }
+  };
+
+  return {
+    step,
+    show,
+    visible,
+    isLastStep: step === steps.length - 1,
+    currentMessage: steps[step]?.message ?? "",
+    dismiss,
+    next,
+  };
+}
+
+export default function Leo({ storageKey, steps }: UseLeoOptions) {
+  const {
+    show,
+    visible,
+    currentMessage,
+    step,
+    isLastStep,
+    dismiss,
+    next,
+  } = useLeo({ storageKey, steps });
+
+  if (!show) return null;
 
   return (
-    <>
-      {show && (
-        <div className="fixed inset-0 z-40 cursor-pointer bg-black/10" onClick={next} />
-      )}
+    <div className="fixed inset-0 z-50">
+      <div
+        className="fixed inset-0 bg-black/10"
+        onClick={next}
+      />
 
       <div
-        className={`fixed bottom-3 left-3 right-3 z-50 transition-all duration-700 ease-in-out
-          ${show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"}`}
+        className={`fixed bottom-3 left-3 right-3 z-50 transition-all duration-700 ease-in-out ${
+          show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
+        }`}
       >
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -39,7 +109,7 @@ export default function Leo({ storageKey, steps }: LeoProps) {
                 <span className="text-amber-50 font-semibold text-sm tracking-wide">Léo</span>
               </div>
               <div className="flex gap-1.5">
-                {Array.from({ length: totalSteps }).map((_, i) => (
+                {steps.map((_, i) => (
                   <div
                     key={i}
                     className={`h-1.5 rounded-full transition-all duration-300 ${
@@ -50,7 +120,7 @@ export default function Leo({ storageKey, steps }: LeoProps) {
               </div>
             </div>
 
-            <div className="flex items-center justify-between gap-4">
+            <div className="relative flex items-center justify-between gap-4">
               <AnimatePresence mode="wait">
                 {visible && (
                   <motion.p
@@ -65,19 +135,16 @@ export default function Leo({ storageKey, steps }: LeoProps) {
                   </motion.p>
                 )}
               </AnimatePresence>
-
-              <button
-                onClick={(e) => { e.stopPropagation(); dismiss(); }}
-                className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center rounded-full border-2 border-sapin/40 text-sapin hover:bg-sapin hover:text-amber-50 transition-all duration-200 cursor-pointer text-sm font-bold z-30"
-              >
-                ✕
-              </button>
             </div>
 
             <div className="flex items-center justify-between mt-3">
               <p className="text-sapin/50 text-xs italic">Cliquez n'importe où pour continuer...</p>
               <button
-                onClick={(e) => { e.stopPropagation(); next(); }}
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  next();
+                }}
                 className="flex items-center gap-1.5 bg-sapin text-amber-50 text-xs font-semibold px-4 py-1.5 rounded-full hover:bg-sapin/80 transition-all duration-200 cursor-pointer"
               >
                 {isLastStep ? "Terminer" : "Suivant"}
@@ -99,10 +166,10 @@ export default function Leo({ storageKey, steps }: LeoProps) {
             alt="écureuil Récoltéo"
             width={270}
             height={270}
-            className="object-contain w-[180px] sm:w-[270px]"
+            className="object-contain w-[180px] sm:w-[230px]"
           />
         </motion.div>
       </div>
-    </>
+    </div>
   );
 }

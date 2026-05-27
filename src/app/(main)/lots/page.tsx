@@ -7,6 +7,7 @@ import CatalogueLots, {
   type Lot,
 } from "./_components/CatalogueLots";
 import GestionLots from "@/src/components/sections/GestionLots";
+import Leo from "@/src/components/ui/modals/Leo";
 
 const LOT_FIELDS =
   "id_lot, name_entreprise, adresse, adresse_recup, instructions, category, nature, quantity, dlc, montant_chiffre, montant_lettre, created_at, lat, lng";
@@ -46,7 +47,10 @@ export default async function LotPage() {
       .eq("statut", true)
       .eq("id_commercant", commercantResult.data!.id_commercant)
       .order("created_at", { ascending: false });
-
+    const LEO_STEPS = [
+      { message: "Bienvenue dans votre espace de gestion des lots. Ici, vous pouvez déclarer vos invendus et les mettre à disposition des associations partenaires." },
+      { message: "Chaque lot que vous déclarez est une opportunité de lutter contre le gaspillage et de soutenir votre communauté locale." },
+    ]
     return (
       <main>
         <Hero
@@ -62,6 +66,7 @@ export default async function LotPage() {
           secondaryButtonHref="/profil"
         />
         <GestionLots lots={(lotsData ?? []) as Lot[]} />
+        <Leo storageKey="leo-login" steps={LEO_STEPS} />
       </main>
     );
   }
@@ -100,6 +105,10 @@ export default async function LotPage() {
   }
 
   if (isAdmin) {
+    const LEO_STEPS = [
+    { message: "Explorez les lots mis à disposition par nos commerçants partenaires et réservez ceux dont votre association a besoin." },
+    { message: "Chaque lot est une opportunité de lutter contre le gaspillage et de soutenir votre activité associative." },
+    ];
     return (
       <main>
         <Hero
@@ -115,9 +124,15 @@ export default async function LotPage() {
           secondaryButtonHref="/contact"
         />
         <GestionLots lots={lots} adminView />
+        <Leo storageKey="leo-login" steps={LEO_STEPS} />
       </main>
     );
   }
+
+ const LEO_STEPS = [
+  { message: "Explorez les lots mis à disposition par nos commerçants partenaires et réservez ceux dont votre association a besoin." },
+  { message: "Chaque lot est une opportunité de lutter contre le gaspillage et de soutenir votre activité associative." },
+ ];
 
   return (
     <main>
@@ -151,6 +166,7 @@ export default async function LotPage() {
         filterEmptyTitle="Aucun lot ne correspond à vos filtres"
         filterEmptySubtitle="Essayez d'élargir le rayon ou de changer la période."
       />
+      <Leo storageKey="leo-login" steps={LEO_STEPS} />
     </main>
   );
 }
