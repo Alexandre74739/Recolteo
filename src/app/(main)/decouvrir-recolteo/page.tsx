@@ -31,7 +31,7 @@ export default function DecouvrirRecolteo() {
       <About />
       <VideoDemo />
       <Faq />
-      <Leo storageKey="leo-login" steps={LEO_STEPS} />
+      <Leo storageKey="leo-decouvrir" steps={LEO_STEPS} />
     </main>
   );
 }

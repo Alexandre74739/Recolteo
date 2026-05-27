@@ -66,7 +66,7 @@ export default async function LotPage() {
           secondaryButtonHref="/profil"
         />
         <GestionLots lots={(lotsData ?? []) as Lot[]} />
-        <Leo storageKey="leo-login" steps={LEO_STEPS} />
+        <Leo storageKey="leo-lots" steps={LEO_STEPS} />
       </main>
     );
   }
@@ -124,7 +124,7 @@ export default async function LotPage() {
           secondaryButtonHref="/contact"
         />
         <GestionLots lots={lots} adminView />
-        <Leo storageKey="leo-login" steps={LEO_STEPS} />
+        <Leo storageKey="leo-lots" steps={LEO_STEPS} />
       </main>
     );
   }
@@ -166,7 +166,7 @@ export default async function LotPage() {
         filterEmptyTitle="Aucun lot ne correspond à vos filtres"
         filterEmptySubtitle="Essayez d'élargir le rayon ou de changer la période."
       />
-      <Leo storageKey="leo-login" steps={LEO_STEPS} />
+      <Leo storageKey="leo-lots" steps={LEO_STEPS} />
     </main>
   );
 }

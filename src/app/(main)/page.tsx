@@ -28,7 +28,7 @@ export default function Home() {
       />
       <Categories />
       <HowItWorks />
-      <Leo storageKey="leo-login" steps={LEO_STEPS} />
+      <Leo storageKey="leo-home" steps={LEO_STEPS} />
 
     </main>
   );

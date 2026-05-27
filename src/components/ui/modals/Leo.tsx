@@ -23,15 +23,10 @@ export function useLeo({ storageKey, steps }: UseLeoOptions) {
     const key = storageKey ?? "recolteo_leo_seen_v1";
     try {
       const seen = localStorage.getItem(key);
-      if (seen) {
-        setShow(false);
-      } else {
-        setShow(true);
-      }
+      setShow(!seen);
     } catch (err) {
       setShow(true);
     }
-    setShow(true);
   }, [storageKey]);
 
   useEffect(() => {
