@@ -14,10 +14,16 @@ import Input from "@/src/components/ui/primitives/Input";
 import Button from "@/src/components/ui/primitives/Button";
 import TabToggle from "@/src/components/ui/primitives/TabToggle";
 import Checkbox from "@/src/components/ui/primitives/Checkbox";
+import Select from "@/src/components/ui/primitives/Select";
 import {
   writeCookieConsent,
   readCookieConsent,
 } from "@/src/lib/cookie-consent";
+import {
+  ASSO_CATEGORIES,
+  ASSO_TYPE_MAP,
+  ASSO_TYPE_LABELS,
+} from "@/src/lib/data/association-types";
 
 type Role = "commercant" | "association";
 
@@ -37,9 +43,14 @@ type Step1Data = {
 
 type Step2Data = {
   name_entreprise: string;
-  adresse: string;
+  rue: string;
+  ville: string;
   rna: string;
+  type_asso_cat: string;
   type_asso: string;
+  date_reconnaissance: string;
+  date_jo: string;
+  date_agrement: string;
   accept_geolocation: boolean;
   siret: string;
   type_activity: string;
@@ -50,13 +61,24 @@ const TEL_RE = /^(?:\+33|0033|0)[1-9]\d{8}$/;
 const SIRET_RE = /^\d{14}$/;
 const RNA_RE = /^W\d{9}$/i;
 
+function formatTel(raw: string): string {
+  const digits = raw.replace(/\D/g, "").slice(0, 10);
+  const parts = digits.match(/.{1,2}/g) ?? [];
+  return parts.join(" ");
+}
+
 function captureStep2(form: HTMLFormElement): Step2Data {
   const fd = new FormData(form);
   return {
     name_entreprise: (fd.get("name_entreprise") as string) ?? "",
-    adresse: (fd.get("adresse") as string) ?? "",
+    rue: (fd.get("rue") as string) ?? "",
+    ville: (fd.get("ville") as string) ?? "",
     rna: (fd.get("rna") as string) ?? "",
+    type_asso_cat: (fd.get("type_asso_cat") as string) ?? "",
     type_asso: (fd.get("type_asso") as string) ?? "",
+    date_reconnaissance: (fd.get("date_reconnaissance") as string) ?? "",
+    date_jo: (fd.get("date_jo") as string) ?? "",
+    date_agrement: (fd.get("date_agrement") as string) ?? "",
     accept_geolocation: fd.get("accept_geolocation") === "on",
     siret: (fd.get("siret") as string) ?? "",
     type_activity: (fd.get("type_activity") as string) ?? "",
@@ -77,14 +99,22 @@ export default function SignUpForm() {
   });
   const [s2, setS2] = useState<Step2Data>({
     name_entreprise: "",
-    adresse: "",
+    rue: "",
+    ville: "",
     rna: "",
+    type_asso_cat: "",
     type_asso: "",
+    date_reconnaissance: "",
+    date_jo: "",
+    date_agrement: "",
     accept_geolocation: false,
     siret: "",
     type_activity: "",
     forme_juridique: "",
   });
+  const [telDisplay, setTelDisplay] = useState(() =>
+    s1.tel ? formatTel(s1.tel) : "",
+  );
   const [acceptsCgu, setAcceptsCgu] = useState(false);
   const [localError, setLocalError] = useState<string>();
   const step2FormRef = useRef<HTMLFormElement>(null);
@@ -145,6 +175,10 @@ export default function SignUpForm() {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
 
+    const rue = (fd.get("rue") as string).trim();
+    const ville = (fd.get("ville") as string).trim();
+    fd.set("adresse", `${rue}, ${ville}`);
+
     if (s1.role === "association") {
       const rna = (fd.get("rna") as string).trim().toUpperCase();
       if (!RNA_RE.test(rna)) {
@@ -164,7 +198,9 @@ export default function SignUpForm() {
     }
 
     if (!acceptsCgu) {
-      setLocalError("Veuillez accepter les CGU et la politique de confidentialité pour continuer.");
+      setLocalError(
+        "Veuillez accepter les CGU et la politique de confidentialité pour continuer.",
+      );
       return;
     }
 
@@ -192,20 +228,22 @@ export default function SignUpForm() {
         {([1, 2] as const).map((n, i) => (
           <Fragment key={n}>
             <div
-              className={`flex items-center gap-1.5 text-xs font-semibold transition-colors ${step === n
+              className={`flex items-center gap-1.5 text-xs font-semibold transition-colors ${
+                step === n
                   ? "text-sapin"
                   : step > n
                     ? "text-sapin/60"
                     : "text-sapin/25"
-                }`}
+              }`}
             >
               <span
-                className={`w-5 h-5 rounded-full border-2 flex items-center justify-center text-[10px] font-bold transition-all ${step > n
+                className={`w-5 h-5 rounded-full border-2 flex items-center justify-center text-[10px] font-bold transition-all ${
+                  step > n
                     ? "bg-sapin border-sapin text-cream"
                     : step === n
                       ? "border-sapin bg-sapin/10 text-sapin"
                       : "border-sapin/20 text-sapin/30"
-                  }`}
+                }`}
               >
                 {step > n ? "✓" : n}
               </span>
@@ -214,8 +252,9 @@ export default function SignUpForm() {
             {i === 0 && (
               <div
                 key="sep"
-                className={`flex-1 h-0.5 rounded-full transition-all duration-300 ${step > 1 ? "bg-sapin/40" : "bg-sapin/10"
-                  }`}
+                className={`flex-1 h-0.5 rounded-full transition-all duration-300 ${
+                  step > 1 ? "bg-sapin/40" : "bg-sapin/10"
+                }`}
               />
             )}
           </Fragment>
@@ -263,7 +302,8 @@ export default function SignUpForm() {
               type="tel"
               required
               placeholder="06 00 00 00 00"
-              defaultValue={s1.tel}
+              value={telDisplay}
+              onChange={(v) => setTelDisplay(formatTel(v))}
             />
             <Input
               id="pwd"
@@ -321,34 +361,123 @@ export default function SignUpForm() {
                 defaultValue={s2.name_entreprise}
               />
             </div>
-            <div className="sm:col-span-2">
-              <Input
-                id="adresse"
-                name="adresse"
-                label="Adresse"
-                required
-                placeholder="12 rue de la Paix, 75001 Paris"
-                defaultValue={s2.adresse}
-              />
-            </div>
+            <Input
+              id="rue"
+              name="rue"
+              label="Rue"
+              required
+              placeholder="12 rue de la Paix"
+              defaultValue={s2.rue}
+            />
+            <Input
+              id="ville"
+              name="ville"
+              label="Ville"
+              required
+              placeholder="Paris"
+              defaultValue={s2.ville}
+            />
 
             {isAsso ? (
               <>
-                <Input
-                  id="rna"
-                  name="rna"
-                  label="Numéro RNA"
-                  required
-                  placeholder="W751000000"
-                  defaultValue={s2.rna}
-                />
-                <Input
-                  id="type_asso"
-                  name="type_asso"
-                  label="Type d'association"
-                  required
-                  placeholder="Aide alimentaire…"
-                  defaultValue={s2.type_asso}
+                <div className="sm:col-span-2">
+                  <Input
+                    id="rna"
+                    name="rna"
+                    label="Numéro RNA"
+                    required
+                    placeholder="W751000000"
+                    defaultValue={s2.rna}
+                  />
+                </div>
+
+                <div className="sm:col-span-2 flex items-center gap-3">
+                  <span className="text-xs font-bold text-sapin/40 uppercase tracking-wider whitespace-nowrap">
+                    Statut juridique
+                  </span>
+                  <div className="flex-1 h-px bg-sapin/10" />
+                </div>
+
+                <div className="sm:col-span-2">
+                  <Select
+                    id="type_asso_cat"
+                    name="type_asso_cat"
+                    label="Catégorie"
+                    required
+                    placeholder="Sélectionnez une catégorie…"
+                    options={ASSO_CATEGORIES}
+                    value={s2.type_asso_cat}
+                    onChange={(v) =>
+                      setS2((p) => ({
+                        ...p,
+                        type_asso_cat: v,
+                        type_asso: "",
+                        date_reconnaissance: "",
+                        date_jo: "",
+                        date_agrement: "",
+                      }))
+                    }
+                  />
+                </div>
+                {s2.type_asso_cat && (
+                  <div className="sm:col-span-2">
+                    <Select
+                      id="type_asso"
+                      name="type_asso"
+                      label="Type d'association"
+                      required
+                      placeholder="Sélectionnez un type…"
+                      options={ASSO_TYPE_MAP[s2.type_asso_cat] ?? []}
+                      value={s2.type_asso}
+                      onChange={(v) =>
+                        setS2((p) => ({
+                          ...p,
+                          type_asso: v,
+                          date_reconnaissance: "",
+                          date_jo: "",
+                          date_agrement: "",
+                        }))
+                      }
+                    />
+                  </div>
+                )}
+                {s2.type_asso === "utilite_publique" && (
+                  <>
+                    <Input
+                      id="date_reconnaissance"
+                      name="date_reconnaissance"
+                      label="Date de la reconnaissance"
+                      type="date"
+                      required
+                      defaultValue={s2.date_reconnaissance}
+                    />
+                    <Input
+                      id="date_jo"
+                      name="date_jo"
+                      label="Date de publication au Journal Officiel"
+                      type="date"
+                      required
+                      defaultValue={s2.date_jo}
+                    />
+                  </>
+                )}
+                {(s2.type_asso === "agree_budget" ||
+                  s2.type_asso === "patrimoine") && (
+                  <div className="sm:col-span-2">
+                    <Input
+                      id="date_agrement"
+                      name="date_agrement"
+                      label="Date d'agrément"
+                      type="date"
+                      required
+                      defaultValue={s2.date_agrement}
+                    />
+                  </div>
+                )}
+                <input
+                  type="hidden"
+                  name="type_asso_label"
+                  value={ASSO_TYPE_LABELS[s2.type_asso] ?? ""}
                 />
                 <div className="sm:col-span-2">
                   <Checkbox
@@ -403,13 +532,26 @@ export default function SignUpForm() {
               onChange={(e) => setAcceptsCgu(e.target.checked)}
               className="mt-0.5 w-4 h-4 accent-sapin shrink-0 cursor-pointer"
             />
-            <label htmlFor="accept_cgu" className="text-sm text-sapin/80 leading-relaxed cursor-pointer">
+            <label
+              htmlFor="accept_cgu"
+              className="text-sm text-sapin/80 leading-relaxed cursor-pointer"
+            >
               J'ai lu et j'accepte les{" "}
-              <Link href="/mentions-legales" target="_blank" rel="noopener noreferrer" className="underline font-semibold hover:text-sapin transition-colors">
+              <Link
+                href="/mentions-legales"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline font-semibold hover:text-sapin transition-colors"
+              >
                 Conditions Générales d'Utilisation
               </Link>{" "}
               et la{" "}
-              <Link href="/politique-de-confidentialite" target="_blank" rel="noopener noreferrer" className="underline font-semibold hover:text-sapin transition-colors">
+              <Link
+                href="/politique-de-confidentialite"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline font-semibold hover:text-sapin transition-colors"
+              >
                 politique de confidentialité
               </Link>{" "}
               de Récoltéo. <span className="text-peach font-semibold">*</span>
@@ -426,7 +568,7 @@ export default function SignUpForm() {
               onClick={handleBack}
               className="px-5 py-3.5 rounded-xl border-2 border-sapin/20 text-sapin text-sm font-semibold hover:border-sapin/50 transition-colors"
             >
-              ← Retour
+              Retour
             </button>
             <Button
               label={pending ? "Création…" : "Créer mon compte"}
