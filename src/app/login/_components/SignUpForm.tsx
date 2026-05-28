@@ -44,6 +44,7 @@ type Step1Data = {
 type Step2Data = {
   name_entreprise: string;
   rue: string;
+  code_postal: string;
   ville: string;
   rna: string;
   type_asso_cat: string;
@@ -72,6 +73,7 @@ function captureStep2(form: HTMLFormElement): Step2Data {
   return {
     name_entreprise: (fd.get("name_entreprise") as string) ?? "",
     rue: (fd.get("rue") as string) ?? "",
+    code_postal: (fd.get("code_postal") as string) ?? "",
     ville: (fd.get("ville") as string) ?? "",
     rna: (fd.get("rna") as string) ?? "",
     type_asso_cat: (fd.get("type_asso_cat") as string) ?? "",
@@ -100,6 +102,7 @@ export default function SignUpForm() {
   const [s2, setS2] = useState<Step2Data>({
     name_entreprise: "",
     rue: "",
+    code_postal: "",
     ville: "",
     rna: "",
     type_asso_cat: "",
@@ -178,6 +181,12 @@ export default function SignUpForm() {
     const rue = (fd.get("rue") as string).trim();
     const ville = (fd.get("ville") as string).trim();
     fd.set("adresse", `${rue}, ${ville}`);
+
+    const cp = (fd.get("code_postal") as string).trim();
+    if (cp && !/^\d{5}$/.test(cp)) {
+      setLocalError("Le code postal doit contenir exactement 5 chiffres.");
+      return;
+    }
 
     if (s1.role === "association") {
       const rna = (fd.get("rna") as string).trim().toUpperCase();
@@ -370,13 +379,23 @@ export default function SignUpForm() {
               defaultValue={s2.rue}
             />
             <Input
-              id="ville"
-              name="ville"
-              label="Ville"
+              id="code_postal"
+              name="code_postal"
+              label="Code postal"
               required
-              placeholder="Paris"
-              defaultValue={s2.ville}
+              placeholder="75001"
+              defaultValue={s2.code_postal}
             />
+            <div className="sm:col-span-2">
+              <Input
+                id="ville"
+                name="ville"
+                label="Ville"
+                required
+                placeholder="Paris"
+                defaultValue={s2.ville}
+              />
+            </div>
 
             {isAsso ? (
               <>
@@ -484,7 +503,7 @@ export default function SignUpForm() {
                     id="accept_geolocation"
                     name="accept_geolocation"
                     label="Autoriser la géolocalisation de mon adresse"
-                    description="Votre adresse sera géocodée via l'API officielle de la Base Adresse Nationale pour vous permettre de filtrer les lots par proximité. Modifiable à tout moment dans vos préférences cookies."
+                    description="Votre adresse sera géocodée pour vous permettre de filtrer les lots par proximité. Modifiable à tout moment dans vos préférences cookies."
                     checked={s2.accept_geolocation}
                     onChange={(v) =>
                       setS2((p) => ({ ...p, accept_geolocation: v }))

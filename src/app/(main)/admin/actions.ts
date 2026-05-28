@@ -408,13 +408,13 @@ export async function validerCollectAdmin(
   const [{ data: association }, { data: commercant }] = await Promise.all([
     admin
       .from("association")
-      .select("name_entreprise, rna, adresse, email")
+      .select("name_entreprise, rna, adresse, code_postal, email")
       .eq("id_association", collect.id_association)
       .maybeSingle(),
     admin
       .from("commercant")
       .select(
-        "id_commercant, name_entreprise, email, siret, forme_juridique, adresse",
+        "id_commercant, name_entreprise, email, siret, forme_juridique, adresse, code_postal",
       )
       .eq("id_commercant", lot.id_commercant)
       .maybeSingle(),
@@ -453,12 +453,14 @@ export async function validerCollectAdmin(
         name_entreprise: association.name_entreprise,
         rna: association.rna ?? "",
         adresse: association.adresse ?? "",
+        code_postal: association.code_postal ?? "",
       },
       commercant: {
         name_entreprise: commercant.name_entreprise,
         forme_juridique: commercant.forme_juridique ?? "",
         siret: commercant.siret ?? "",
         adresse: commercant.adresse ?? "",
+        code_postal: commercant.code_postal ?? "",
       },
       lot: {
         nature: lot.nature,

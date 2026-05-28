@@ -51,12 +51,12 @@ export default async function ProfilPage() {
   const [{ data: commercant }, { data: association }] = await Promise.all([
     supabase
       .from("commercant")
-      .select("name_entreprise, email, tel, siret, type_activity, forme_juridique, adresse")
+      .select("name_entreprise, email, tel, siret, type_activity, forme_juridique, adresse, code_postal")
       .eq("id_user", userRow.id_user)
       .maybeSingle(),
     supabase
       .from("association")
-      .select("name_entreprise, email, tel, rna, type_asso, adresse")
+      .select("name_entreprise, email, tel, rna, type_asso, adresse, code_postal")
       .eq("id_user", userRow.id_user)
       .maybeSingle(),
   ]);
