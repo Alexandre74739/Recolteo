@@ -41,9 +41,6 @@ export default function ContactSection({
           <Reveal delay={0.15}>
             <p className="text-sapin leading-relaxed">{description}</p>
           </Reveal>
-          <Reveal delay={0.3}>
-            <Image src={Ecureuil} alt="description" width={200} className="mx-auto mt-8 hidden sm:block"/>
-          </Reveal>
         </div>
 
         <div>

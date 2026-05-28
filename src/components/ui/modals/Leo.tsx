@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import Ecureuil from "@/src/asset/ecureuil.webp";
+import LogoWebp from "@/src/asset/logo.webp";
+import Button from "@/src/components/ui/primitives/Button";
 
 interface LeoStep {
   message: string;
@@ -87,7 +89,7 @@ export default function Leo({ storageKey, steps }: UseLeoOptions) {
       />
 
       <div
-        className={`fixed bottom-3 left-3 right-3 z-50 transition-all duration-700 ease-in-out ${
+        className={`fixed bottom-3 inset-x-3 z-50 max-w-7xl mx-auto transition-all duration-300 ease-in-out ${
           show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-full pointer-events-none"
         }`}
       >
@@ -95,13 +97,12 @@ export default function Leo({ storageKey, steps }: UseLeoOptions) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, ease: "easeOut" }}
-          className="relative z-20 w-full bg-amber-50 border-2 border-sapin rounded-2xl shadow-2xl overflow-hidden"
+          className="relative z-20 w-full bg-cream border-2 border-sapin rounded-2xl shadow-2xl overflow-hidden"
         >
-          <div className="px-8 py-5">
+          <div className="px-8 py-3">
             <div className="flex items-center justify-between mb-3">
               <div className="inline-flex items-center gap-2 bg-sapin rounded-full px-4 py-1">
-                <div className="w-2 h-2 rounded-full bg-lime animate-pulse" />
-                <span className="text-amber-50 font-semibold text-sm tracking-wide">Léo</span>
+                <span className="text-cream font-semibold text-sm tracking-wide">Léo</span>
               </div>
               <div className="flex gap-1.5">
                 {steps.map((_, i) => (
@@ -115,7 +116,7 @@ export default function Leo({ storageKey, steps }: UseLeoOptions) {
               </div>
             </div>
 
-            <div className="relative flex items-center justify-between gap-4">
+            <div className="relative flex flex-col items-start justify-between gap-4 h-auto min-h-[6rem] sm:min-h-[4rem] mt-4">
               <AnimatePresence mode="wait">
                 {visible && (
                   <motion.p
@@ -124,27 +125,31 @@ export default function Leo({ storageKey, steps }: UseLeoOptions) {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -10 }}
                     transition={{ duration: 0.2 }}
-                    className="text-sapin text-lg leading-relaxed font-medium max-w-2xl"
+                    className="text-sapin italic text-md leading-relaxed max-w-full px-4 py-3 sm:px-6 my-3"
                   >
                     {currentMessage}
                   </motion.p>
                 )}
               </AnimatePresence>
+              <div className="flex justify-start px-4 sm:px-6">
+                <Image
+                  src={LogoWebp}
+                  alt="Logo Récoltéo"
+                  width={120}
+                  height={34}
+                  className="h-auto w-[80px] sm:w-[110px] object-contain"
+                />
+              </div>
             </div>
 
-            <div className="flex items-center justify-between mt-3">
-              <p className="text-sapin/50 text-xs italic">Cliquez n'importe où pour continuer...</p>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  next();
-                }}
-                className="flex items-center gap-1.5 bg-sapin text-amber-50 text-xs font-semibold px-4 py-1.5 rounded-full hover:bg-sapin/80 transition-all duration-200 cursor-pointer"
-              >
-                {isLastStep ? "Terminer" : "Suivant"}
-                {!isLastStep && <span>→</span>}
-              </button>
+            <div className="flex justify-end mt-4">
+              <Button
+                label={isLastStep ? "Terminer" : "Suivant"}
+                onClick={() => next()}
+                variant="sapin"
+                size="sm"
+                showArrow={!isLastStep}
+              />
             </div>
           </div>
         </motion.div>
