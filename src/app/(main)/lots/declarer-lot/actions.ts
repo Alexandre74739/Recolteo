@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/src/lib/supabase/server";
 import { createAdminClient } from "@/src/lib/supabase/admin";
 import { geocodeAddress } from "@/src/lib/geocode";
+import type { Horaire } from "@/src/components/ui/cards/LotCard";
 
 export type LotActionState = {
   error?: string;
@@ -18,6 +19,7 @@ export type LotImportRow = {
   montant_lettre: string;
   adresse_recup: string;
   instructions: string | null;
+  horaires: Horaire[];
 };
 
 export async function importerLots(
@@ -69,6 +71,7 @@ export async function importerLots(
         dlc: row.dlc,
         montant_chiffre: row.montant_chiffre,
         montant_lettre: row.montant_lettre,
+        horaires: row.horaires,
         statut: true,
       })
       .select("id_lot")
@@ -126,6 +129,13 @@ export async function declarerLot(
   if (isNaN(quantityRaw) || quantityRaw <= 0) return { error: "Quantité invalide." };
   if (isNaN(montantRaw) || montantRaw < 0) return { error: "Montant invalide." };
 
+  let horaires: Horaire[] = [];
+  try {
+    horaires = JSON.parse((formData.get("horaires") as string) || "[]") as Horaire[];
+  } catch {
+    horaires = [];
+  }
+
   const admin = createAdminClient();
   const { data: inserted, error } = await admin
     .from("lot")
@@ -142,6 +152,7 @@ export async function declarerLot(
       dlc: (formData.get("DLC") as string) || null,
       montant_chiffre: montantRaw,
       montant_lettre: (formData.get("montant_lettre") as string).trim(),
+      horaires,
       statut: true,
     })
     .select("id_lot")

@@ -5,8 +5,15 @@ import Button from "@/src/components/ui/primitives/Button";
 import LotDetailModal from "@/src/components/ui/modals/LotDetailModal";
 import { useCart } from "@/src/lib/cart-context";
 
+export interface Horaire {
+  jour: string;
+  debut: string;
+  fin: string;
+}
+
 export interface Lot {
   id_lot: number;
+  id_commercant: number;
   name_entreprise: string;
   adresse: string;
   adresse_recup: string;
@@ -18,6 +25,7 @@ export interface Lot {
   montant_chiffre: number;
   montant_lettre: string;
   created_at: string;
+  horaires: Horaire[];
   lat?: number | null;
   lng?: number | null;
 }
@@ -50,7 +58,9 @@ export default function LotCard({
               {lot.category}
             </span>
             <div className="w-4 h-px bg-sapin/20 rounded-full" />
-            <span className="text-xs font-black text-sapin">{lot.quantity} kg</span>
+            <span className="text-xs font-black text-sapin">
+              {lot.quantity} kg
+            </span>
           </div>
 
           <div className="flex-1 min-w-0 p-3 flex flex-col gap-1.5">
@@ -65,7 +75,9 @@ export default function LotCard({
 
             <p className="text-xs text-sapin/50 truncate">{lot.nature}</p>
 
-            <p className="text-[10px] text-sapin/40 font-medium truncate">{lot.adresse_recup}</p>
+            <p className="text-[10px] text-sapin/40 font-medium truncate">
+              {lot.adresse_recup}
+            </p>
 
             {showCartButton && (
               <div onClick={(e) => e.stopPropagation()}>
@@ -105,14 +117,18 @@ export default function LotCard({
               </span>
             </div>
 
-            <p className="text-xs text-sapin/60 leading-relaxed line-clamp-2">{lot.nature}</p>
+            <p className="text-xs text-sapin/60 leading-relaxed line-clamp-2">
+              {lot.nature}
+            </p>
 
             <div className="mt-auto space-y-2">
               <div className="bg-sapin/4 border border-sapin/6 rounded-xl px-3 py-2">
                 <span className="block text-[9px] font-bold text-sapin/40 uppercase tracking-widest mb-0.5">
                   Volume
                 </span>
-                <span className="block text-sm font-bold text-sapin">{lot.quantity} kg</span>
+                <span className="block text-sm font-bold text-sapin">
+                  {lot.quantity} kg
+                </span>
               </div>
 
               <div className="bg-sapin/4 border border-sapin/6 rounded-xl px-3 py-2">
