@@ -1,201 +1,104 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { useState, useEffect, useSyncExternalStore } from "react";
+import { AnimatePresence } from "motion/react";
 import Ecureuil from "@/src/asset/ecureuil.webp";
 import Button from "@/src/components/ui/primitives/Button";
+import StepDots from "@/src/components/ui/primitives/StepDots";
+import Reveal from "@/src/components/animations/Reveal";
+import SlideIn from "@/src/components/animations/SlideIn";
+import FadeOut from "@/src/components/animations/FadeOut";
 
-interface LeoStep {
-  message: string;
-}
-
-interface UseLeoOptions {
+export interface LeoProps {
   storageKey?: string;
-  steps: LeoStep[];
+  steps: { message: string }[];
 }
 
-export function useLeo({ storageKey, steps }: UseLeoOptions) {
+export default function Leo({
+  storageKey = "recolteo_leo_seen_v1",
+  steps,
+}: LeoProps) {
   const [step, setStep] = useState(0);
-  const [show, setShow] = useState(false);
-  const [visible, setVisible] = useState(true);
-
-  useEffect(() => {
-    const key = storageKey ?? "recolteo_leo_seen_v1";
-    try {
-      const seen = localStorage.getItem(key);
-      setShow(!seen);
-    } catch (err) {
-      setShow(true);
-    }
-  }, [storageKey]);
-
+  const [dismissed, setDismissed] = useState(false);
+  const seen = useSyncExternalStore(
+    () => () => {},
+    () => !!localStorage.getItem(storageKey),
+    () => false,
+  );
+  const show = !seen && !dismissed;
   useEffect(() => {
     document.body.style.overflow = show ? "hidden" : "";
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [show]);
-
   const dismiss = () => {
-    const key = storageKey ?? "recolteo_leo_seen_v1";
-    try {
-      localStorage.setItem(key, "1");
-    } catch (err) {}
-    setShow(false);
+    localStorage.setItem(storageKey, "1");
+    setDismissed(true);
   };
-
-  const next = () => {
-    if (step < steps.length - 1) {
-      setVisible(false);
-      setTimeout(() => {
-        setStep((s) => s + 1);
-        setVisible(true);
-      }, 250);
-    } else {
-      dismiss();
-    }
-  };
-
-  const prev = () => {
-    if (step > 0) {
-      setVisible(false);
-      setTimeout(() => {
-        setStep((s) => s - 1);
-        setVisible(true);
-      }, 250);
-    }
-  };
-
-  return {
-    step,
-    show,
-    visible,
-    isLastStep: step === steps.length - 1,
-    currentMessage: steps[step]?.message ?? "",
-    dismiss,
-    next,
-    prev,
-  };
-}
-
-export default function Leo({ storageKey, steps }: UseLeoOptions) {
-  const {
-    show,
-    visible,
-    currentMessage,
-    step,
-    isLastStep,
-    next,
-    prev,
-  } = useLeo({ storageKey, steps });
+  const next = () =>
+    step < steps.length - 1 ? setStep((s) => s + 1) : dismiss();
+  const isLast = step === steps.length - 1;
 
   return (
     <AnimatePresence>
       {show && (
-        <div className="fixed inset-0 z-50">
-          <motion.div
-            className="fixed inset-0 bg-black/30"
+        <FadeOut className="fixed inset-0 z-60">
+          <div
+            className="fixed inset-0 bg-black/30 backdrop-blur-sm"
             onClick={next}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
           />
-
-          <div className="fixed bottom-3 inset-x-3 z-50 max-w-7xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 40 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="relative z-20 w-full bg-cream border-2 border-sapin rounded-2xl shadow-2xl overflow-hidden"
-            >
-              <div className="px-8 py-3">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="inline-flex items-center gap-2 bg-sapin rounded-full px-4 py-1">
-                    <span className="text-cream font-semibold text-sm tracking-wide">Léo</span>
+          <div className="fixed bottom-0 inset-x-0 z-60">
+            <Reveal>
+              <div className="relative z-20 w-full bg-cream border-t-2 border-sapin shadow-2xl">
+                <div className="px-4 sm:px-8 py-4">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="inline-flex items-center gap-2 bg-sapin rounded-full px-4 py-1">
+                      <span className="text-cream font-semibold text-sm tracking-wide">
+                        {"Léo"}
+                      </span>
+                    </div>
+                    <StepDots
+                      count={steps.length}
+                      current={step}
+                      onGoTo={setStep}
+                    />
                   </div>
-                  <div className="flex gap-1.5">
-                    {steps.map((_, i) => (
-                      <div
-                        key={i}
-                        className={`h-1.5 rounded-full transition-all duration-300 ${
-                          i === step ? "w-6 bg-sapin" : "w-1.5 bg-sapin/30"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                <motion.div
-                  layout
-                  className="relative flex flex-col items-start justify-between gap-4 h-auto min-h-[7rem] sm:min-h-[5rem] mt-4"
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                >
-                  <AnimatePresence mode="wait">
-                    {visible && (
-                      <motion.p
-                        key={step}
-                        initial={{ opacity: 0, x: 10 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -10 }}
-                        transition={{ duration: 0.2 }}
-                        className="text-sapin italic text-md leading-relaxed max-w-full px-4 py-3 sm:px-6 my-3"
-                      >
-                        {currentMessage}
-                      </motion.p>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
-
-                <div className="flex justify-between">
-                  <h2 className="text-sapin font-bold text-xl">Récoltéo</h2>
-                  <div className="flex gap-2">
-                    <AnimatePresence>
-                      {step > 0 && (
-                        <motion.div
-                          initial={{ opacity: 0, x: 10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{ opacity: 0, x: 10 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          <Button
-                            label="Précédent"
-                            onClick={() => prev()}
-                            variant="peach-outline"
-                            size="sm"
-                            showArrow={false}
-                          />
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                  <p className="text-sapin italic leading-relaxed py-3 my-1 pr-28 sm:pr-56">
+                    {steps[step]?.message}
+                  </p>
+                  <div className="flex items-center justify-between mt-2">
+                    <h2 className="text-sapin font-bold text-xl">
+                      {"Récoltéo"}
+                    </h2>
                     <Button
-                      label={isLastStep ? "Terminer" : "Suivant"}
-                      onClick={() => next()}
+                      label={isLast ? "Terminer" : "Suivant"}
+                      onClick={next}
                       variant="sapin"
                       size="sm"
-                      showArrow={!isLastStep}
+                      showArrow={!isLast}
                     />
                   </div>
                 </div>
               </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 40 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="z-10 absolute right-4 sm:right-32"
-              style={{ bottom: "100%", marginBottom: "-60px" }}
+            </Reveal>
+            <div
+              className="z-10 absolute right-2 sm:right-24 pointer-events-none"
+              style={{ bottom: "100%", marginBottom: "-44px" }}
             >
-              <Image
-                src={Ecureuil}
-                alt="écureuil Récoltéo"
-                width={270}
-                height={270}
-                className="object-contain w-[180px] sm:w-[290px]"
-              />
-            </motion.div>
+              <SlideIn direction="right" delay={0.3}>
+                <Image
+                  src={Ecureuil}
+                  alt={"écureuil Récoltéo"}
+                  width={280}
+                  height={280}
+                  className="object-contain w-28 sm:w-56"
+                />
+              </SlideIn>
+            </div>
           </div>
-        </div>
+        </FadeOut>
       )}
     </AnimatePresence>
   );
