@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/src/lib/supabase/server";
 import { createAdminClient } from "@/src/lib/supabase/admin";
+import type { Horaire } from "@/src/components/ui/cards/LotCard";
 
 export type LotEditState = {
   error?: string;
@@ -45,6 +46,13 @@ export async function modifierLot(
   if (isNaN(quantityRaw) || quantityRaw <= 0) return { error: "Quantité invalide." };
   if (isNaN(montantRaw) || montantRaw < 0) return { error: "Montant invalide." };
 
+  let horaires: Horaire[] = [];
+  try {
+    horaires = JSON.parse((formData.get("horaires") as string) || "[]") as Horaire[];
+  } catch {
+    horaires = [];
+  }
+
   let updateQuery = adminClient
     .from("lot")
     .update({
@@ -57,6 +65,7 @@ export async function modifierLot(
       dlc: (formData.get("DLC") as string) || null,
       montant_chiffre: montantRaw,
       montant_lettre: (formData.get("montant_lettre") as string).trim(),
+      horaires,
     })
     .eq("id_lot", id);
 

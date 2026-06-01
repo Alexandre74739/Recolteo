@@ -3,14 +3,12 @@ import { createClient } from "@/src/lib/supabase/server";
 import { createAdminClient } from "@/src/lib/supabase/admin";
 import { geocodeAddress } from "@/src/lib/geocode";
 import Hero from "@/src/components/sections/Hero";
-import CatalogueLots, {
-  type Lot,
-} from "./_components/CatalogueLots";
+import CatalogueLots, { type Lot } from "./_components/CatalogueLots";
 import GestionLots from "@/src/components/sections/GestionLots";
 import Leo from "@/src/components/ui/modals/Leo";
 
 const LOT_FIELDS =
-  "id_lot, name_entreprise, adresse, adresse_recup, instructions, category, nature, quantity, dlc, montant_chiffre, montant_lettre, created_at, lat, lng";
+  "id_lot, id_commercant, name_entreprise, adresse, adresse_recup, instructions, category, nature, quantity, dlc, montant_chiffre, montant_lettre, created_at, lat, lng, horaires";
 
 const LEO_STEPS_COMMERCANT = [
   { message: "Bienvenue sur votre espace lots ! Déclarez ici vos invendus du jour en quelques clics pour les mettre à disposition des associations partenaires." },
@@ -47,11 +45,11 @@ export default async function LotPage() {
     supabase.from("administrateur").select("id_admin").maybeSingle(),
     userRow
       ? supabase
-        .from("commercant")
-        .select("id_commercant")
-        .eq("id_user", userRow.id_user)
-        .eq("is_validated", true)
-        .maybeSingle()
+          .from("commercant")
+          .select("id_commercant")
+          .eq("id_user", userRow.id_user)
+          .eq("is_validated", true)
+          .maybeSingle()
       : Promise.resolve({ data: null, error: null }),
   ]);
 

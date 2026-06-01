@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { X, MapPin, Package, Clock, Info } from "@deemlol/next-icons";
+import { X, MapPin, Package, Clock, Info, Truck } from "@deemlol/next-icons";
 import Button from "@/src/components/ui/primitives/Button";
 import { useCart } from "@/src/lib/cart-context";
 import type { Lot } from "@/src/components/ui/cards/LotCard";
@@ -242,6 +242,26 @@ export default function LotDetailModal({
               <p className="text-sm text-sapin/80 leading-relaxed">
                 {lot.instructions}
               </p>
+            </div>
+          )}
+
+          {lot.horaires && lot.horaires.length > 0 && (
+            <div className="space-y-1.5">
+              <p className="text-[10px] font-bold text-sapin/40 uppercase tracking-widest flex items-center gap-1.5 px-2">
+                <Truck size={12} />
+                Disponibilités du commerçant
+              </p>
+              <div className="flex flex-wrap gap-2 px-2">
+                {lot.horaires.map((h, i) => (
+                  <span
+                    key={i}
+                    className="inline-flex items-center gap-1 bg-sapin/6 border border-sapin/12 rounded-xl px-3 py-1.5 text-xs font-semibold text-sapin"
+                  >
+                    {h.jour} · {h.debut.replace(":", "h")}–
+                    {h.fin.replace(":", "h")}
+                  </span>
+                ))}
+              </div>
             </div>
           )}
 
