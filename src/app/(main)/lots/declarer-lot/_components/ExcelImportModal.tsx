@@ -5,6 +5,7 @@ import type * as XLSXType from "xlsx";
 import { X, Upload, FileText, CheckCircle } from "@deemlol/next-icons";
 import Button from "@/src/components/ui/primitives/Button";
 import { importerLots, type LotImportRow } from "../actions";
+import type { Horaire } from "@/src/components/ui/cards/LotCard";
 
 const DRAG_THRESHOLD = 150;
 
@@ -38,33 +39,44 @@ async function genererModele() {
     { key: "Valeur en lettres", req: false, wch: 24, num: false },
     { key: "Adresse de récupération", req: true, wch: 32, num: false },
     { key: "Instructions", req: false, wch: 28, num: false },
+    { key: "Disponibilités", req: false, wch: 48, num: false },
   ] as const;
 
   const N = COL_DEFS.length;
-  const BLANK_ROWS = 30;
+  const BLANK_ROWS = 29;
 
   const mkCell = (v: string | number, t: "s" | "n" = "s") => ({ t, v });
   const thin = (rgb: string) => ({ style: "thin", color: { rgb } });
   const med = (rgb: string) => ({ style: "medium", color: { rgb } });
 
+  const EXAMPLE_VALUES: (string | number)[] = [
+    "Pains et viennoiseries du jour",
+    "Invendus alimentaires",
+    15.5,
+    "2026-06-15",
+    45,
+    "quarante-cinq euros",
+    "12 rue de la Paix, 75001 Paris",
+    "Récupérer avant 18h",
+    "Lundi 08:00-20:00, Mercredi 14:00-18:00",
+  ];
+
   const aoa: (string | number)[][] = [
     COL_DEFS.map((c) => c.key),
-    ...Array(BLANK_ROWS).fill(COL_DEFS.map(() => "")),
+    EXAMPLE_VALUES,
+    ...Array.from({ length: BLANK_ROWS }, () => COL_DEFS.map(() => "")),
   ];
 
   const ws = XLSX.utils.aoa_to_sheet(aoa);
   ws["!cols"] = COL_DEFS.map((c) => ({ wch: c.wch }));
-  ws["!rows"] = [{ hpt: 30 }, ...Array(BLANK_ROWS).fill({ hpt: 20 })];
+  ws["!rows"] = [{ hpt: 30 }, { hpt: 22 }, ...Array.from({ length: BLANK_ROWS }, () => ({ hpt: 20 }))];
 
   for (let c = 0; c < N; c++) {
     const addr = XLSX.utils.encode_cell({ r: 0, c });
     const def = COL_DEFS[c];
     ws[addr].s = {
       font: { bold: true, size: 10, color: { rgb: C.blanc } },
-      fill: {
-        patternType: "solid",
-        fgColor: { rgb: def.req ? C.sapin : C.light },
-      },
+      fill: { patternType: "solid", fgColor: { rgb: def.req ? C.sapin : C.light } },
       alignment: { horizontal: "center", vertical: "center", wrapText: true },
       border: {
         left: def.req ? med(C.mid) : thin(C.light),
@@ -75,26 +87,67 @@ async function genererModele() {
     };
   }
 
-  for (let r = 1; r <= BLANK_ROWS; r++) {
+  for (let c = 0; c < N; c++) {
+    const addr = XLSX.utils.encode_cell({ r: 1, c });
+    if (!ws[addr]) ws[addr] = mkCell("");
+    const def = COL_DEFS[c];
+    ws[addr].s = {
+      font: { italic: true, size: 10, color: { rgb: "888888" } },
+      fill: { patternType: "solid", fgColor: { rgb: "FFFBEA" } },
+      alignment: { vertical: "center", horizontal: def.num ? "right" : "left" },
+      border: {
+        left: med("E8C84A"),
+        right: thin("E8E8D0"),
+        top: thin("E8E8D0"),
+        bottom: med("E8C84A"),
+      },
+    };
+    if (def.key === "Volume (kg)") ws[addr].z = "0.0";
+    if (def.key === "Valeur estimée (€)") ws[addr].z = "#,##0.00";
+  }
+
+const CATEGORIES_LIST = [
+    "Invendus alimentaires",
+    "Produits frais",
+    "Matières premières",
+    "Matériel de bureau",
+    "Équipements",
+    "Livres & Jouets",
+    "Dons de vêtements",
+    "Mobilier",
+    "Autres ressources",
+  ];
+
+  ws["!dataValidations"] = [
+    {
+      sqref: `B2:B${BLANK_ROWS + 2}`,
+      type: "list",
+      formula1: `"${CATEGORIES_LIST.join(",")}"`,
+      showDropDown: false,
+      showErrorMessage: true,
+      errorStyle: "stop",
+      error: "Veuillez choisir une catégorie dans la liste déroulante.",
+      errorTitle: "Catégorie invalide",
+      showInputMessage: true,
+      promptTitle: "Catégorie",
+      prompt: "Cliquez sur la flèche pour choisir une catégorie.",
+    },
+  ];
+
+
+  for (let r = 2; r <= BLANK_ROWS + 1; r++) {
     const isAlt = r % 2 === 0;
     for (let c = 0; c < N; c++) {
       const addr = XLSX.utils.encode_cell({ r, c });
       if (!ws[addr]) ws[addr] = mkCell("");
       const def = COL_DEFS[c];
       const bg = def.req
-        ? isAlt
-          ? C.rowReqAlt
-          : C.rowReq
-        : isAlt
-          ? C.rowOptAlt
-          : C.rowOpt;
+        ? isAlt ? C.rowReqAlt : C.rowReq
+        : isAlt ? C.rowOptAlt : C.rowOpt;
       ws[addr].s = {
         font: { size: 10, color: { rgb: C.text } },
         fill: { patternType: "solid", fgColor: { rgb: bg } },
-        alignment: {
-          vertical: "center",
-          horizontal: def.num ? "right" : "left",
-        },
+        alignment: { vertical: "center", horizontal: def.num ? "right" : "left" },
         border: {
           left: def.req ? med(C.bReq) : thin(C.bOpt),
           right: thin(def.req ? C.bReq : C.bOpt),
@@ -107,204 +160,22 @@ async function genererModele() {
     }
   }
 
-  const CATEGORIES = [
-    { label: "Invendus alimentaires", bg: "1B6B42", fg: "FFFFFF" },
-    { label: "Produits frais", bg: "2E7D50", fg: "FFFFFF" },
-    { label: "Matières premières", bg: "3A8B5C", fg: "FFFFFF" },
-    { label: "Matériel de bureau", bg: "4F9D6E", fg: "FFFFFF" },
-    { label: "Équipements", bg: "65AF82", fg: "FFFFFF" },
-    { label: "Livres & Jouets", bg: "7DC48A", fg: "1A3D2B" },
-    { label: "Dons de vêtements", bg: "9AD4A5", fg: "1A3D2B" },
-    { label: "Mobilier", bg: "B8E6C1", fg: "1A3D2B" },
-    { label: "Autres ressources", bg: "D4F0DA", fg: "1A3D2B" },
-  ];
-
-  type CatRow = {
-    type: "banner" | "subtitle" | "head" | "cat" | "note";
-    text: string;
-    idx?: number;
-  };
-  const catRows: CatRow[] = [
-    { type: "banner", text: "RECOLTEO — Catégories de lots" },
-    {
-      type: "subtitle",
-      text: "Copiez une valeur ci-dessous exactement dans la colonne « Catégorie » de votre import.",
-    },
-    { type: "head", text: "CATÉGORIES VALIDES" },
-    ...CATEGORIES.map((cat, i) => ({
-      type: "cat" as const,
-      text: cat.label,
-      idx: i,
-    })),
-    {
-      type: "note",
-      text: "Toute autre valeur sera acceptée mais ne correspondra à aucun filtre de recherche.",
-    },
-  ];
-
-  const wsCat = XLSX.utils.aoa_to_sheet(catRows.map((r) => [r.text]));
-  wsCat["!cols"] = [{ wch: 52 }];
-
-  const catRowH: { hpt: number }[] = [];
-  catRows.forEach((row, i) => {
-    const addr = XLSX.utils.encode_cell({ r: i, c: 0 });
-    if (!wsCat[addr]) return;
-    if (row.type === "banner") {
-      catRowH[i] = { hpt: 36 };
-      wsCat[addr].s = {
-        font: { bold: true, size: 15, color: { rgb: C.blanc } },
-        fill: { patternType: "solid", fgColor: { rgb: C.sapin } },
-        alignment: { horizontal: "center", vertical: "center" },
-      };
-    } else if (row.type === "subtitle") {
-      catRowH[i] = { hpt: 18 };
-      wsCat[addr].s = {
-        font: { italic: true, size: 9, color: { rgb: C.textMid } },
-        fill: { patternType: "solid", fgColor: { rgb: C.lime } },
-        alignment: { horizontal: "center", vertical: "center", wrapText: true },
-        border: { bottom: thin(C.limeDeep) },
-      };
-    } else if (row.type === "head") {
-      catRowH[i] = { hpt: 22 };
-      wsCat[addr].s = {
-        font: { bold: true, size: 10, color: { rgb: C.blanc } },
-        fill: { patternType: "solid", fgColor: { rgb: C.mid } },
-        alignment: { horizontal: "left", vertical: "center" },
-      };
-    } else if (row.type === "cat") {
-      catRowH[i] = { hpt: 22 };
-      const cat = CATEGORIES[row.idx!];
-      wsCat[addr].s = {
-        font: { bold: true, size: 11, color: { rgb: cat.fg } },
-        fill: { patternType: "solid", fgColor: { rgb: cat.bg } },
-        alignment: { horizontal: "left", vertical: "center" },
-        border: {
-          left: med(C.sapin),
-          right: thin(C.bOpt),
-          top: thin(C.bOpt),
-          bottom: thin(C.bOpt),
-        },
-      };
-    } else if (row.type === "note") {
-      catRowH[i] = { hpt: 15 };
-      wsCat[addr].s = {
-        font: { italic: true, size: 8, color: { rgb: "999999" } },
-        fill: { patternType: "solid", fgColor: { rgb: C.cream } },
-        alignment: { horizontal: "left", vertical: "center" },
-      };
-    }
-  });
-  wsCat["!rows"] = catRowH;
-
-  type GuideRow = {
-    type: "title" | "section" | "item" | "spacer";
-    text?: string;
-  };
-  const guide: GuideRow[] = [
-    { type: "title", text: "Guide d'utilisation — Import de lots Recolteo" },
-    { type: "spacer" },
-    {
-      type: "section",
-      text: "CHAMPS OBLIGATOIRES  (fond vert foncé dans l'onglet import)",
-    },
-    {
-      type: "item",
-      text: "    Nature du lot — Description courte (ex : Pains, Fromages, Fruits frais…)",
-    },
-    {
-      type: "item",
-      text: "    Catégorie — Voir onglet « Catégories » pour les valeurs valides",
-    },
-    {
-      type: "item",
-      text: "    Volume (kg) — Poids en kilogrammes, décimales acceptées (ex : 2.5)",
-    },
-    {
-      type: "item",
-      text: "    Adresse de récupération — Adresse complète : numéro + rue + ville",
-    },
-    { type: "spacer" },
-    {
-      type: "section",
-      text: "CHAMPS OPTIONNELS  (fond vert clair dans l'onglet import)",
-    },
-    {
-      type: "item",
-      text: "    DLC — Date limite au format AAAA-MM-JJ (ex : 2025-01-31)",
-    },
-    {
-      type: "item",
-      text: "    Valeur estimée (€) — En chiffres uniquement (ex : 75)",
-    },
-    {
-      type: "item",
-      text: "    Valeur en lettres — Doit correspondre à la valeur chiffrée",
-    },
-    {
-      type: "item",
-      text: "    Instructions — Consignes spéciales pour la collecte",
-    },
-    { type: "spacer" },
-    { type: "section", text: "FORMATS ACCEPTÉS" },
-    { type: "item", text: "    .xlsx — Microsoft Excel (recommandé)" },
-    { type: "item", text: "    .xls — Excel ancien format" },
-    { type: "item", text: "    .ods — LibreOffice / OpenOffice Calc" },
-    {
-      type: "item",
-      text: "    .csv — Séparateur virgule ou point-virgule, encodage UTF-8",
-    },
-    { type: "spacer" },
-    { type: "section", text: "CONSEILS" },
-    {
-      type: "item",
-      text: "    Ne modifiez pas la ligne 1 (en-têtes de colonnes)",
-    },
-    { type: "item", text: "    Saisissez vos données à partir de la ligne 2" },
-    {
-      type: "item",
-      text: "    Une ligne sans Nature, Catégorie, Volume ou Adresse sera ignorée",
-    },
-  ];
-
-  const wsGuide = XLSX.utils.aoa_to_sheet(guide.map((g) => [g.text ?? ""]));
-  wsGuide["!cols"] = [{ wch: 82 }];
-  const gRowH: { hpt: number }[] = [];
-  guide.forEach((row, i) => {
-    const addr = XLSX.utils.encode_cell({ r: i, c: 0 });
-    if (!wsGuide[addr]) return;
-    if (row.type === "title") {
-      gRowH[i] = { hpt: 32 };
-      wsGuide[addr].s = {
-        font: { bold: true, size: 14, color: { rgb: C.blanc } },
-        fill: { patternType: "solid", fgColor: { rgb: C.sapin } },
-        alignment: { horizontal: "left", vertical: "center" },
-      };
-    } else if (row.type === "section") {
-      gRowH[i] = { hpt: 22 };
-      wsGuide[addr].s = {
-        font: { bold: true, size: 10, color: { rgb: C.blanc } },
-        fill: { patternType: "solid", fgColor: { rgb: C.mid } },
-        alignment: { horizontal: "left", vertical: "center" },
-      };
-    } else if (row.type === "item") {
-      gRowH[i] = { hpt: 17 };
-      wsGuide[addr].s = {
-        font: { size: 10, color: { rgb: C.text } },
-        fill: {
-          patternType: "solid",
-          fgColor: { rgb: i % 2 === 0 ? C.rowOpt : C.rowReq },
-        },
-        alignment: { horizontal: "left", vertical: "center" },
-      };
-    }
-  });
-  wsGuide["!rows"] = gRowH;
-
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Lots à importer");
-  XLSX.utils.book_append_sheet(wb, wsCat, "Catégories");
-  XLSX.utils.book_append_sheet(wb, wsGuide, "Guide");
   XLSX.writeFile(wb, "modele_lots_recolteo.xlsx");
+}
+
+function parseHoraires(raw: string): Horaire[] {
+  if (!raw.trim()) return [];
+  return raw
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean)
+    .flatMap((s) => {
+      const match = s.match(/^(\w+)\s+(\d{2}:\d{2})-(\d{2}:\d{2})$/);
+      if (!match) return [];
+      return [{ jour: match[1], debut: match[2], fin: match[3] }];
+    });
 }
 
 function parseRows(
@@ -325,6 +196,7 @@ function parseRows(
       montant_lettre: String(row["Valeur en lettres"] ?? "").trim(),
       adresse_recup: String(row["Adresse de récupération"] ?? "").trim(),
       instructions: String(row["Instructions"] ?? "").trim() || null,
+      horaires: parseHoraires(String(row["Disponibilités"] ?? "").trim()),
     }))
     .filter((r) => r.nature && r.adresse_recup && !isNaN(r.quantity));
 }
