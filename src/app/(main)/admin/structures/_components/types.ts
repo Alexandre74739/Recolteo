@@ -11,7 +11,6 @@ export interface StructureCommercant {
   forme_juridique: string;
   adresse: string;
   siret: string;
-  statut_abonnement: boolean;
   created_at: string;
   docs: DocItem[];
 }
