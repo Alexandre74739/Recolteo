@@ -123,7 +123,6 @@ export default function StructuresFiltre({
                     ]}
                     createdAt={c.created_at}
                     showActions={false}
-                    subscriptionActive={c.statut_abonnement}
                     docs={c.docs}
                   />
                 </Reveal>

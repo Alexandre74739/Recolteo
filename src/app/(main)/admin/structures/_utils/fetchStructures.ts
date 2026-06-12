@@ -34,7 +34,7 @@ export async function fetchStructuresData(
 
   let commercantFullQ = admin
     .from("commercant")
-    .select("id_commercant, name_entreprise, email, tel, type_activity, forme_juridique, adresse, siret, statut_abonnement, created_at", { count: "exact" })
+    .select("id_commercant, name_entreprise, email, tel, type_activity, forme_juridique, adresse, siret, created_at", { count: "exact" })
     .eq("is_validated", true);
   if (search) commercantFullQ = commercantFullQ.ilike("name_entreprise", `%${search}%`);
 
