@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import AdminDecorations from "../_components/AdminDecorations";
 import CollecteAdminList from "./_components/CollecteAdminList";
 import Reveal from "@/src/components/animations/Reveal";

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import AdminDecorations from "../_components/AdminDecorations";
 import AdminFiltre from "../_components/AdminFiltre";
 import { getValidationData, VALIDATION_PAGE_SIZE } from "../_utils/fetchAdmin";

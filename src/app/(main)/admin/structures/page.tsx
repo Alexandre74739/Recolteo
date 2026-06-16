@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import AdminDecorations from "../_components/AdminDecorations";
 import StructuresFiltre from "./_components/StructuresFiltre";
 import {
