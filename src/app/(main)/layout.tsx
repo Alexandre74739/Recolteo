@@ -1,12 +1,9 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/src/lib/supabase/server";
 import PendingValidationModal from "@/src/components/ui/modals/PendingValidationModal";
 
-export default async function MainLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+async function AuthGuard({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -59,4 +56,16 @@ export default async function MainLayout({
   }
 
   return <>{children}</>;
+}
+
+export default function MainLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <Suspense>
+      <AuthGuard>{children}</AuthGuard>
+    </Suspense>
+  );
 }
