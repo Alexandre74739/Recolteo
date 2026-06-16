@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { Resend } from "resend";
 import { createClient } from "@/src/lib/supabase/server";
@@ -321,6 +322,7 @@ export async function reserverLots(
   );
 
   await admin.from("lot").update({ statut: false }).in("id_lot", lotIds);
+  revalidateTag("lots", "max");
 
   return {
     success: true,

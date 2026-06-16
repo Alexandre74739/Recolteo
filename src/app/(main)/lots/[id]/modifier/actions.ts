@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/src/lib/supabase/server";
 import { createAdminClient } from "@/src/lib/supabase/admin";
@@ -91,5 +92,6 @@ export async function modifierLot(
     return { error: "Erreur lors de la modification du lot." };
   }
 
+  revalidateTag("lots", "max");
   redirect("/lots");
 }

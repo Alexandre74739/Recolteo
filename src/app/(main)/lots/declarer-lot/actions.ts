@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/src/lib/supabase/server";
 import { createAdminClient } from "@/src/lib/supabase/admin";
@@ -117,6 +118,7 @@ export async function importerLots(
     );
   }
 
+  revalidateTag("lots", "max");
   return {};
 }
 
@@ -217,5 +219,6 @@ export async function declarerLot(
       .eq("id_lot", inserted.id_lot);
   }
 
+  revalidateTag("lots", "max");
   redirect("/lots");
 }

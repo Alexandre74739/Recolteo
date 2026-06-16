@@ -1,3 +1,4 @@
+import { cacheTag, cacheLife } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/src/lib/supabase/server";
 import { createAdminClient } from "@/src/lib/supabase/admin";
@@ -6,6 +7,19 @@ import type { Lot } from "@/src/components/ui/cards/LotCard";
 
 const LOT_FIELDS =
   "id_lot, id_commercant, name_entreprise, adresse, adresse_recup, instructions, category, nature, quantity, dlc, montant_chiffre, montant_lettre, created_at, lat, lng, horaires";
+
+async function getCachedLots(): Promise<Lot[]> {
+  "use cache";
+  cacheTag("lots");
+  cacheLife("minutes");
+  const admin = createAdminClient();
+  const { data } = await admin
+    .from("lot")
+    .select(LOT_FIELDS)
+    .eq("statut", true)
+    .order("created_at", { ascending: false });
+  return (data ?? []) as Lot[];
+}
 
 export type LotPageData =
   | { view: "docs-gate" }
@@ -61,12 +75,7 @@ export async function fetchLotsData(): Promise<LotPageData> {
     return { view: "commercant", lots: (lotsData ?? []) as Lot[] };
   }
 
-  const { data: lotsData } = await supabase
-    .from("lot")
-    .select(LOT_FIELDS)
-    .eq("statut", true)
-    .order("created_at", { ascending: false });
-  const lots = (lotsData ?? []) as Lot[];
+  const lots = await getCachedLots();
 
   if (isAdmin) return { view: "admin", lots };
 
