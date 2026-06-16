@@ -1,5 +1,4 @@
-export const dynamic = "force-dynamic";
-
+import { Suspense } from "react";
 import AdminDecorations from "../_components/AdminDecorations";
 import StructuresFiltre from "./_components/StructuresFiltre";
 import {
@@ -7,7 +6,7 @@ import {
   STRUCTURES_PAGE_SIZE,
 } from "./_utils/fetchStructures";
 
-export default async function StructuresPage({
+async function StructuresContent({
   searchParams,
 }: {
   searchParams: Promise<{ filter?: string; page?: string; search?: string }>;
@@ -23,19 +22,31 @@ export default async function StructuresPage({
   } = await fetchStructuresData(searchParams);
 
   return (
+    <StructuresFiltre
+      commercants={commercants}
+      commercantsTotal={commercantsTotal}
+      associations={associations}
+      associationsTotal={associationsTotal}
+      filter={filter}
+      page={page}
+      pageSize={STRUCTURES_PAGE_SIZE}
+      search={search}
+    />
+  );
+}
+
+export default function StructuresPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ filter?: string; page?: string; search?: string }>;
+}) {
+  return (
     <main className="relative w-full min-h-[calc(100vh-80px)] overflow-hidden">
       <AdminDecorations />
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <StructuresFiltre
-          commercants={commercants}
-          commercantsTotal={commercantsTotal}
-          associations={associations}
-          associationsTotal={associationsTotal}
-          filter={filter}
-          page={page}
-          pageSize={STRUCTURES_PAGE_SIZE}
-          search={search}
-        />
+        <Suspense>
+          <StructuresContent searchParams={searchParams} />
+        </Suspense>
       </div>
     </main>
   );
