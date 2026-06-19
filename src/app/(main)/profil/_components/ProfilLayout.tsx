@@ -14,6 +14,7 @@ import CollectesTab from "./tabs/CollectesTab";
 import HistoriqueMembreTab from "./tabs/HistoriqueMembreTab";
 import HistoriqueAdminTab from "./tabs/HistoriqueAdminTab";
 import DeleteConfirmModal from "./DeleteConfirmModal";
+import ValueCard from "@/src/components/ui/cards/ValueCard";
 
 type Tab = "info" | "docs" | "collectes" | "historique" | "securite";
 
@@ -95,6 +96,14 @@ export default function ProfilLayout({ role, entityInfo }: ProfilLayoutProps) {
             {tab === "historique" && role === "admin" && <HistoriqueAdminTab />}
           </div>
         </div>
+      </Reveal>
+
+      <Reveal delay={0.24}>
+        <ValueCard
+          icon={<Shield size={20} />}
+          title="Données protégées"
+          description="Vos informations sont chiffrées et accessibles uniquement par l'équipe Récoltéo."
+        />
       </Reveal>
 
       <Reveal delay={0.3}>

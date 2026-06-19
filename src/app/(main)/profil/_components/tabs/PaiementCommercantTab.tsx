@@ -7,7 +7,6 @@ import LoadingSpinner from "@/src/components/ui/primitives/LoadingSpinner";
 import { fetchSetupIntentSecret } from "../../_hooks/useStripeSetup";
 import { getCommercantPaymentMethod, saveCommercantPaymentMethod } from "../../actions";
 import type { PaymentMethodInfo } from "../../actions";
-import SubscriptionPricingCard from "@/src/components/ui/cards/SubscriptionPricingCard";
 import ValueCard from "@/src/components/ui/cards/ValueCard";
 
 const StripePaymentSetup = dynamic(() => import("../StripePaymentSetup"), { ssr: false });
@@ -86,7 +85,7 @@ export default function PaiementCommercantTab() {
                 <ValueCard
                   icon={<Euro size={20} />}
                   title="Facilitez vos moyens de paiement"
-                  description="Bénéficiez d'une exonération de 50% sur vos impôts"
+                  description="Bénéficiez d'une exonération² de 50% sur vos impôts"
                 />
                 <StripePaymentSetup
                   clientSecret={clientSecret}

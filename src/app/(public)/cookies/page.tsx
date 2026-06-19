@@ -5,7 +5,7 @@ export const metadata = {
   description:
     "Découvrez comment Récoltéo utilise les cookies, quelles données sont collectées et comment gérer vos préférences conformément au RGPD et aux recommandations de la CNIL.",
 };
-
+ 
 export default function CookiesPage() {
   return (
     <main className="max-w-3xl mx-auto px-6 py-16 text-base leading-8 text-sapin">
