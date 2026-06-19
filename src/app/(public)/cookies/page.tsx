@@ -302,10 +302,10 @@ export default function CookiesPage() {
             <li>
               <strong>Email :</strong>{" "}
               <a
-                href="mailto:digitalbylucie@gmail.com"
+                href="mailto:contact@recolteo.fr"
                 className="underline hover:text-sapin/70 transition-colors"
               >
-                digitalbylucie@gmail.com
+                contact@recolteo.fr
               </a>
             </li>
           </ul>

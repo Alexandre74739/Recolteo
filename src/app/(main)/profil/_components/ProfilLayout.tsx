@@ -5,7 +5,6 @@ import { UserX, Shield } from "@deemlol/next-icons";
 import { signOut } from "@/src/app/(public)/login/actions";
 import Button from "@/src/components/ui/primitives/Button";
 import TabToggle from "@/src/components/ui/primitives/TabToggle";
-import ValueCard from "@/src/components/ui/cards/ValueCard";
 import Reveal from "@/src/components/animations/Reveal";
 import ProfilHeader from "./ProfilHeader";
 import InfoTab, { type EntityInfo } from "./tabs/InfoTab";
@@ -96,14 +95,6 @@ export default function ProfilLayout({ role, entityInfo }: ProfilLayoutProps) {
             {tab === "historique" && role === "admin" && <HistoriqueAdminTab />}
           </div>
         </div>
-      </Reveal>
-
-      <Reveal delay={0.24}>
-        <ValueCard
-          icon={<Shield size={20} />}
-          title="Données protégées"
-          description="Vos informations sont chiffrées et accessibles uniquement par l'équipe Récoltéo."
-        />
       </Reveal>
 
       <Reveal delay={0.3}>
