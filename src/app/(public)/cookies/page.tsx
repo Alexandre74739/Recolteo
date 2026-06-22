@@ -8,7 +8,7 @@ export const metadata = {
  
 export default function CookiesPage() {
   return (
-    <main className="max-w-3xl mx-auto px-6 py-16 text-base leading-8 text-sapin">
+    <main className="max-w-3xl mx-auto px-6 py-16 text-base leading-8 text-sapin font-sans">
       <Reveal delay={0.5}>
         <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-sapin mb-10">
           Politique de gestion des cookies
@@ -24,7 +24,7 @@ export default function CookiesPage() {
 
       <Reveal delay={0.65}>
         <section className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">
+          <h2 className="text-2xl font-bold text-sapin mb-4">
             1. Qu'est-ce qu'un cookie ?
           </h2>
           <p className="mb-3">
@@ -44,10 +44,10 @@ export default function CookiesPage() {
 
       <Reveal delay={0.8}>
         <section className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">
+          <h2 className="text-2xl font-bold text-sapin mb-4">
             2. Cookies utilisés par Récoltéo
           </h2>
-          <p className="mb-4 text-md">
+          <p className="mb-4 text-base">
             Récoltéo n'utilise aucun cookie à des fins publicitaires ou de
             ciblage commercial. Les cookies déposés relèvent uniquement des
             catégories suivantes :
@@ -56,20 +56,20 @@ export default function CookiesPage() {
           <div className="space-y-6">
             <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40">
               <div className="flex items-center gap-3 mb-2">
-                <h3 className="font-bold sm:text-2xl text-sapin">Cookies nécessaires</h3>
+                <h3 className="font-bold text-xl text-sapin">Cookies nécessaires</h3>
                 <span className="text-xs bg-lime text-sapin font-semibold px-2 py-0.5 rounded-full">
                   Toujours actifs
                 </span>
               </div>
-              <p className="text-md text-sapin/70 mb-3">
+              <p className="text-base text-sapin/70 mb-3">
                 Ces cookies sont indispensables au fonctionnement du site. Ils
                 assurent la sécurité des sessions, l'authentification et le bon
                 déroulement des fonctionnalités essentielles. Ils ne peuvent pas
-                être désactivés. Le cookie <span className="font-mono text-md">_rc</span> est
+                être désactivés. Le cookie <span className="font-mono text-base">_rc</span> est
                 exempt de consentement au sens de l'Art. 82 de la loi Informatique et Libertés
                 car il a pour finalité exclusive de mémoriser votre choix de consentement.
               </p>
-              <table className="w-full text-lg text-sapin/70 border-collapse">
+              <table className="w-full text-base text-sapin/70 border-collapse">
                 <thead>
                   <tr className="border-b border-sapin/10">
                     <th className="text-left py-1 pr-4 font-semibold">Nom</th>
@@ -93,8 +93,8 @@ export default function CookiesPage() {
             </div>
 
             <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40">
-              <h3 className="font-bold sm:text-2xl text-sapin mb-2">Cookies analytiques</h3>
-              <p className="text-md text-sapin/70 mb-3">
+              <h3 className="font-bold text-xl text-sapin mb-2">Cookies analytiques</h3>
+              <p className="text-base text-sapin/70 mb-3">
                 Ces cookies, déposés uniquement avec votre consentement, nous
                 permettent de mesurer l'audience du site et d'en améliorer les
                 performances (pages les plus visitées, parcours utilisateur,
@@ -107,8 +107,8 @@ export default function CookiesPage() {
             </div>
 
             <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40">
-              <h3 className="font-bold sm:text-2xl text-sapin mb-2">Cookies fonctionnels</h3>
-              <p className="text-md text-sapin/70 mb-3">
+              <h3 className="font-bold text-xl text-sapin mb-2">Cookies fonctionnels</h3>
+              <p className="text-base text-sapin/70 mb-3">
                 Ces cookies, déposés uniquement avec votre consentement,
                 mémorisent vos préférences d'affichage et de navigation (filtres
                 actifs, paramètres d'interface) afin d'améliorer votre
@@ -120,8 +120,8 @@ export default function CookiesPage() {
             </div>
 
             <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40">
-              <h3 className="font-bold sm:text-2xl text-sapin mb-2">Cookies de géolocalisation</h3>
-              <p className="text-md text-sapin/70 mb-3">
+              <h3 className="font-bold text-xl text-sapin mb-2">Cookies de géolocalisation</h3>
+              <p className="text-base text-sapin/70 mb-3">
                 Ces cookies, déposés uniquement avec votre consentement, mémorisent votre
                 autorisation d'utiliser votre adresse postale à des fins de filtrage géographique
                 des lots disponibles. Lorsque vous activez cette option, votre adresse est transmise
@@ -141,18 +141,18 @@ export default function CookiesPage() {
 
       <Reveal delay={0.95}>
         <section className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">
+          <h2 className="text-2xl font-bold text-sapin mb-4">
             3. Stockage local (localStorage)
           </h2>
           <p className="mb-4">
             En complément des cookies, Récoltéo utilise le stockage local du navigateur (<span className="font-mono text-sm">localStorage</span>) pour améliorer votre expérience. Ces données restent sur votre appareil et ne sont jamais transmises à nos serveurs.
           </p>
           <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40">
-            <h3 className="font-bold sm:text-2xl text-sapin mb-2">Stockage fonctionnel</h3>
-            <p className="text-md text-sapin/70 mb-3">
+            <h3 className="font-bold text-xl text-sapin mb-2">Stockage fonctionnel</h3>
+            <p className="text-base text-sapin/70 mb-3">
               Ces données sont stockées uniquement avec votre consentement aux cookies fonctionnels et sont supprimées lorsque vous retirez ce consentement.
             </p>
-            <table className="w-full text-md text-sapin/70 border-collapse">
+            <table className="w-full text-base text-sapin/70 border-collapse">
               <thead>
                 <tr className="border-b border-sapin/10">
                   <th className="text-left py-1 pr-4 font-semibold">Clé</th>
@@ -177,7 +177,7 @@ export default function CookiesPage() {
 
       <Reveal delay={1.1}>
         <section className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">
+          <h2 className="text-2xl font-bold text-sapin mb-4">
             4. Durée de conservation
           </h2>
           <p className="mb-3">
@@ -194,7 +194,7 @@ export default function CookiesPage() {
 
       <Reveal delay={1.1}>
         <section className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">
+          <h2 className="text-2xl font-bold text-sapin mb-4">
             5. Gérer vos préférences
           </h2>
           <p className="mb-3">
@@ -244,14 +244,14 @@ export default function CookiesPage() {
 
       <Reveal delay={1.25}>
         <section className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">
+          <h2 className="text-2xl font-bold text-sapin mb-4">
             6. Vos droits
           </h2>
           <p className="mb-3">
             Conformément au RGPD, vous disposez des droits suivants concernant
             vos données personnelles :
           </p>
-          <ul className="list-disc list-inside space-y-1 text-lg mb-4">
+          <ul className="list-disc list-inside space-y-1 text-base mb-4">
             <li>Droit d'accès à vos données</li>
             <li>Droit de rectification</li>
             <li>Droit à l'effacement (« droit à l'oubli »)</li>
@@ -285,14 +285,14 @@ export default function CookiesPage() {
 
       <Reveal delay={1.4}>
         <section className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">
+          <h2 className="text-2xl font-bold text-sapin mb-4">
             7. Contact
           </h2>
           <p className="mb-3">
             Pour toute question relative à cette politique ou à l'utilisation de
             vos données, vous pouvez nous contacter :
           </p>
-          <ul className="space-y-1 text-lg">
+          <ul className="space-y-1 text-base">
             <li>
               <strong>Responsable :</strong> Lucie Curtatone — Récoltéo
             </li>
