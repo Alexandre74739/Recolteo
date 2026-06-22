@@ -51,10 +51,12 @@ export default function PolitiqueDeConfidentialite() {
       <Reveal delay={0.95}>
         <section className="mb-8">
           <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">3. Délégué à la protection des données</h2>
-          <p className="text-sm text-sapin/70">
-            Récoltéo n'est pas tenu de désigner un Délégué à la Protection des Données (DPO) au regard
-            de la nature et du volume de ses traitements.
-          </p>
+          <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40 text-sm text-sapin/80">
+            <p className="text-md text-sapin/70">
+              Récoltéo n'est pas tenu de désigner un Délégué à la Protection des Données (DPO) au regard
+              de la nature et du volume de ses traitements.
+            </p>
+          </div>
         </section>
       </Reveal>
 
@@ -100,7 +102,7 @@ export default function PolitiqueDeConfidentialite() {
             ].map(({ title, items }) => (
               <div key={title} className="border border-sapin/10 rounded-2xl p-5 bg-beige/40">
                 <p className="font-semibold text-sapin mb-2">{title}</p>
-                <ul className="list-disc list-inside text-sm text-sapin/70 space-y-1">
+                <ul className="list-disc list-inside text-lg text-sapin/70 space-y-1">
                   {items.map((item) => <li key={item}>{item}</li>)}
                 </ul>
               </div>
@@ -113,7 +115,7 @@ export default function PolitiqueDeConfidentialite() {
         <section className="mb-8">
           <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">5. Finalités du traitement</h2>
           <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40">
-            <ul className="list-disc list-inside text-sm text-sapin/80 space-y-1.5">
+            <ul className="list-disc list-inside text-lg text-sapin/80 space-y-1.5">
               <li>Création et gestion des comptes utilisateurs</li>
               <li>Mise en relation commerçants / associations</li>
               <li>Gestion des lots, réservations et reçus CERFA</li>
@@ -131,7 +133,7 @@ export default function PolitiqueDeConfidentialite() {
 
       <Reveal delay={1.4}>
         <section className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">6. Base légale du traitement</h2>
+          <h2 className="text-xl md:text-2xl font-bold text-sapin mb-4">6. Base légale du traitement</h2>
           <div className="space-y-3">
             {[
               { base: "Art. 6.1.b — Exécution du contrat", detail: "Création de compte, gestion des lots et réservations, emails transactionnels, gestion des abonnements et facturation, prélèvement des commissions sur collectes." },
@@ -140,8 +142,8 @@ export default function PolitiqueDeConfidentialite() {
               { base: "Art. 6.1.a — Consentement", detail: "Cookies optionnels, géolocalisation de l'adresse, notifications utilisateurs en cas de violation de données." },
             ].map(({ base, detail }) => (
               <div key={base} className="border border-sapin/10 rounded-2xl p-4 bg-beige/40">
-                <p className="font-semibold text-sapin text-sm">{base}</p>
-                <p className="text-sm text-sapin/70 mt-0.5">{detail}</p>
+                <p className="font-semibold text-sapin text-md">{base}</p>
+                <p className="text-md text-sapin/70 mt-0.5">{detail}</p>
               </div>
             ))}
           </div>
@@ -150,7 +152,7 @@ export default function PolitiqueDeConfidentialite() {
 
       <Reveal delay={1.5}>
         <section className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">7. Sous-traitants et prestataires</h2>
+          <h2 className="text-xl md:text-2xl font-bold text-sapin mb-4">7. Sous-traitants et prestataires</h2>
           <div className="space-y-3">
             {[
               { name: "Supabase", role: "Base de données et authentification", dpa: true },
@@ -161,8 +163,8 @@ export default function PolitiqueDeConfidentialite() {
             ].map(({ name, role, dpa }) => (
               <div key={name} className="border border-sapin/10 rounded-2xl p-4 bg-beige/40 flex items-start gap-3">
                 <div className="flex-1">
-                  <p className="font-semibold text-sapin text-sm">{name}</p>
-                  <p className="text-sm text-sapin/70 mt-0.5">{role}</p>
+                  <p className="font-semibold text-sapin text-md">{name}</p>
+                  <p className="text-md text-sapin/70 mt-0.5">{role}</p>
                 </div>
                 {dpa && (
                   <span className="text-xs bg-lime text-sapin font-semibold px-2 py-0.5 rounded-full shrink-0">DPA signé</span>
@@ -194,9 +196,9 @@ export default function PolitiqueDeConfidentialite() {
 
       <Reveal delay={1.7}>
         <section className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">9. Durée de conservation</h2>
+          <h2 className="text-xl md:text-2xl font-bold text-sapin mb-4">9. Durée de conservation</h2>
           <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40">
-            <table className="w-full text-xs text-sapin/70 border-collapse">
+            <table className="w-full text-md text-sapin/70 border-collapse">
               <thead>
                 <tr className="border-b border-sapin/10">
                   <th className="text-left py-1.5 pr-4 font-semibold">Catégorie</th>
@@ -235,7 +237,7 @@ export default function PolitiqueDeConfidentialite() {
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-sapin/50 mt-3">
+          <p className="text-sm text-sapin/50 mt-3">
             Ces durées peuvent être prolongées pour satisfaire des obligations légales ou en cas de contentieux.
             Vos données sont supprimées à votre demande, sous réserve des obligations légales applicables.
           </p>
@@ -245,7 +247,7 @@ export default function PolitiqueDeConfidentialite() {
       <Reveal delay={1.8}>
         <section className="mb-8">
           <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">10. Sécurité des données</h2>
-          <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40 text-sm text-sapin/80 space-y-2">
+          <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40 text-md text-sapin/80 space-y-2">
             <p>Récoltéo met en œuvre les mesures suivantes pour protéger vos données :</p>
             <ul className="list-disc list-inside space-y-1 text-sapin/70">
               <li>Chiffrement de bout en bout des communications (HTTPS/TLS)</li>
@@ -261,11 +263,11 @@ export default function PolitiqueDeConfidentialite() {
 
       <Reveal delay={1.95}>
         <section className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">11. Traitement des données de paiement</h2>
-          <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40 text-sm text-sapin/80 space-y-3">
+          <h2 className="text-xl md:text-2xl font-bold text-sapin mb-4">11. Traitement des données de paiement</h2>
+          <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40 text-sapin/80 space-y-3">
             <div>
-              <p className="font-semibold text-sapin mb-2">Modèle économique de la plateforme</p>
-              <ul className="list-disc list-inside text-sapin/70 space-y-1">
+              <p className="font-semibold text-md text-sapin mb-2">Modèle économique de la plateforme</p>
+              <ul className="list-disc list-inside text-lg text-sapin/70 space-y-1">
                 <li><strong>Associations :</strong> abonnement annuel avec période d'essai gratuite de 6 mois, géré via Stripe.</li>
                 <li><strong>Commerçants :</strong> commission de 10 % prélevée automatiquement par Stripe à chaque validation de collecte.</li>
               </ul>
@@ -293,10 +295,10 @@ export default function PolitiqueDeConfidentialite() {
 
       <Reveal delay={1.9}>
         <section className="mb-8">
-          <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">12. Vos droits</h2>
+          <h2 className="text-xl md:text-2xl font-bold text-sapin mb-4">12. Vos droits</h2>
           <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40 mb-4">
-            <p className="text-sm text-sapin/80 mb-3">Conformément au RGPD, vous disposez des droits suivants :</p>
-            <ul className="list-disc list-inside text-sm text-sapin/70 space-y-1">
+            <p className="text-md text-sapin/80 mb-3">Conformément au RGPD, vous disposez des droits suivants :</p>
+            <ul className="list-disc list-inside text-lg text-sapin/70 space-y-1">
               <li>Droit d'accès à vos données (Art. 15)</li>
               <li>Droit de rectification (Art. 16)</li>
               <li>Droit à l'effacement / « droit à l'oubli » (Art. 17)</li>
@@ -306,14 +308,14 @@ export default function PolitiqueDeConfidentialite() {
               <li>Droit de retirer votre consentement à tout moment</li>
             </ul>
           </div>
-          <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40 text-sm text-sapin/80">
+          <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40 text-md text-sapin/80">
             <p className="mb-2">
               Pour exercer vos droits, contactez-nous à :{" "}
               <a href="mailto:contact@recolteo.fr" className="underline hover:text-sapin/70 transition-colors font-semibold">
                 contact@recolteo.fr
               </a>
             </p>
-            <p className="text-sapin/60 text-xs">
+            <p className="text-sapin/60 text-sm">
               Vous pouvez également introduire une réclamation auprès de la{" "}
               <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer" className="underline hover:text-sapin/70 transition-colors">
                 CNIL (www.cnil.fr)
@@ -326,6 +328,13 @@ export default function PolitiqueDeConfidentialite() {
       <Reveal delay={2.0}>
         <section className="mb-8">
           <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">13. Modification de la politique</h2>
+          <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40 text-md text-sapin/80">
+            <p>
+              Récoltéo se réserve le droit de modifier la présente politique à tout moment. Les utilisateurs
+              seront informés des modifications importantes via la plateforme ou par email. La version en
+              vigueur est celle publiée sur cette page.
+            </p>
+          </div>
           <p className="text-sm text-sapin/70">
             Récoltéo se réserve le droit de modifier la présente politique à tout moment. Les utilisateurs
             seront informés des modifications importantes via la plateforme ou par email. La version en

@@ -101,7 +101,7 @@ export default function MentionsLegales() {
           <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">5. Propriété intellectuelle</h2>
           <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40 text-sm text-sapin/80 space-y-2">
             <p>
-              L'ensemble du contenu de cette plateforme — textes, images, séquences sonores — est la propriété
+              L'ensemble du contenu de cette plateforme, textes, images, séquences sonores, est la propriété
               de Récoltéo ou de tiers ayant autorisé son utilisation et relève de la législation française et
               internationale sur le droit d'auteur et la propriété intellectuelle.
             </p>
@@ -135,7 +135,7 @@ export default function MentionsLegales() {
               L'éditeur met tout en œuvre pour assurer l'exactitude des informations publiées mais ne peut
               garantir leur exhaustivité. Récoltéo ne saurait être tenu responsable :
             </p>
-            <ul className="list-disc list-inside space-y-1 text-sapin/70">
+            <ul className="list-disc list-inside space-y-1 text-lg text-sapin/70">
               <li>d'interruptions temporaires pour maintenance ou mise à jour ;</li>
               <li>de dysfonctionnements techniques ou incompatibilités ;</li>
               <li>de dommages directs ou indirects résultant de l'utilisation du site ;</li>
@@ -168,7 +168,7 @@ export default function MentionsLegales() {
               les parties s'efforceront de rechercher une solution amiable avant toute action judiciaire.
             </p>
             <p>Textes applicables :</p>
-            <ul className="list-disc list-inside space-y-1 text-sapin/70">
+            <ul className="list-disc list-inside space-y-1 text-lg text-sapin/70">
               <li>Code civil ;</li>
               <li>Code de la consommation ;</li>
               <li>Code de la propriété intellectuelle ;</li>
@@ -184,7 +184,7 @@ export default function MentionsLegales() {
           <h2 className="text-xl sm:text-2xl font-bold text-sapin mb-4">10. Activités interdites</h2>
           <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40 text-sm text-sapin/80">
             <p className="mb-2">En tant qu'utilisateur, vous acceptez de ne pas :</p>
-            <ul className="list-disc list-inside space-y-1 text-sapin/70">
+            <ul className="list-disc list-inside space-y-1 text-lg text-sapin/70">
               <li>Extraire systématiquement des données sans autorisation écrite ;</li>
               <li>Utiliser la plateforme à des fins publicitaires ou commerciales non autorisées ;</li>
               <li>Contourner les fonctions de sécurité du site ;</li>
