@@ -36,7 +36,7 @@ export default function MentionsLegales() {
         <section className="mb-8">
           <h2 className="text-2xl font-bold text-sapin mb-4">2. Hébergement</h2>
           <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40 text-base text-sapin/80">
-            <p><strong>Vercel Inc.</strong> — 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis</p>
+            <p><strong>Vercel Inc.</strong> : 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis</p>
           </div>
         </section>
       </Reveal>
@@ -46,7 +46,7 @@ export default function MentionsLegales() {
           <h2 className="text-2xl font-bold text-sapin mb-4">3. Prestataire de paiement</h2>
           <div className="border border-sapin/10 rounded-2xl p-5 bg-beige/40 text-base text-sapin/80 space-y-2">
             <p>Les transactions financières de la plateforme sont gérées par :</p>
-            <p><strong>Stripe Inc.</strong> — 510 Townsend Street, San Francisco, CA 94103, États-Unis</p>
+            <p><strong>Stripe Inc.</strong> : 510 Townsend Street, San Francisco, CA 94103, États-Unis</p>
             <p>
               Stripe est certifié <strong>PCI-DSS niveau 1</strong>. Aucune coordonnée bancaire complète
               ne transite par les serveurs de Récoltéo ni n'est stockée dans nos bases de données. Stripe
@@ -219,7 +219,7 @@ export default function MentionsLegales() {
 
       <Reveal delay={2.0}>
         <p className="text-xs text-sapin/40 border-t border-sapin/10 pt-6">
-          Mentions légales Récoltéo — juin 2026
+          Mentions légales Récoltéo - juin 2026
         </p>
       </Reveal>
     </main>

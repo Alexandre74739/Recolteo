@@ -314,7 +314,7 @@ export default function CookiesPage() {
 
       <Reveal delay={1.55}>
         <p className="text-xs text-sapin/40 border-t border-sapin/10 pt-6">
-          Dernière mise à jour : mai 2026 — Cette politique peut être modifiée à
+          Dernière mise à jour : mai 2026 - Cette politique peut être modifiée à
           tout moment. La version en vigueur est celle publiée sur cette page.
         </p>
       </Reveal>
