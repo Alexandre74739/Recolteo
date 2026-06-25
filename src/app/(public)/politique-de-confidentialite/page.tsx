@@ -12,7 +12,7 @@ export default function PolitiqueDeConfidentialite() {
         <p className="mb-8">
           La présente politique a pour objet d'informer les utilisateurs de la plateforme Récoltéo
           sur la manière dont leurs données personnelles sont collectées, utilisées et protégées,
-          conformément au Règlement Général sur la Protection des Données (RGPD — Règlement UE 2016/679).
+          conformément au Règlement Général sur la Protection des Données (RGPD : Règlement UE 2016/679).
         </p>
       </Reveal>
 
@@ -291,7 +291,7 @@ export default function PolitiqueDeConfidentialite() {
               <li>Droit de rectification (Art. 16)</li>
               <li>Droit à l'effacement / « droit à l'oubli » (Art. 17)</li>
               <li>Droit à la limitation du traitement (Art. 18)</li>
-              <li>Droit à la portabilité (Art. 20) — exportez vos données via votre espace profil</li>
+              <li>Droit à la portabilité (Art. 20) - exportez vos données via votre espace profil</li>
               <li>Droit d'opposition (Art. 21)</li>
               <li>Droit de retirer votre consentement à tout moment</li>
             </ul>
@@ -328,7 +328,7 @@ export default function PolitiqueDeConfidentialite() {
 
       <Reveal delay={2.2}>
         <p className="text-base text-sapin/40 border-t border-sapin/10 pt-6">
-          Politique de confidentialité Récoltéo — juin 2026 — Conforme au RGPD (Règlement UE 2016/679).
+          Politique de confidentialité Récoltéo - juin 2026 - Conforme au RGPD (Règlement UE 2016/679).
         </p>
       </Reveal>
     </main>
