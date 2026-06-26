@@ -84,16 +84,16 @@ export default function Teo({
               </div>
             </Reveal>
             <div
-              className="z-10 absolute right-2 sm:right-24 pointer-events-none"
-              style={{ bottom: "100%", marginBottom: "-44px" }}
+              className="z-10 absolute right-0 sm:right-24 pointer-events-none -mb-14 sm:-mb-26"
+              style={{ bottom: "100%" }}
             >
               <SlideIn direction="right" delay={0.3}>
                 <Image
                   src={Ecureuil}
                   alt={"écureuil Récoltéo"}
-                  width={280}
-                  height={280}
-                  className="object-contain w-28 sm:w-56"
+                  width={560}
+                  height={560}
+                  className="object-contain w-64 sm:w-md"
                 />
               </SlideIn>
             </div>
